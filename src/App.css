@@ -1,0 +1,16 @@
+.App {
+  margin-top: 15px;
+}
+
+.App .navbar{
+	background-color: #000000;
+    border-color: #E7E7E7;
+}
+.App .navbar-brand {
+  font-weight: bold;
+  color: #c0c0c0;
+}
+
+.App .nav{
+	font-weight: bold;
+}
