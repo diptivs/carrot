@@ -5,8 +5,6 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import config from "../config";
 import "./Notes.css";
-import { s3Upload } from "../libs/awsLib";
-import { s3Delete } from "../libs/awsLib";
 
 export default class Notes extends Component {
 	constructor(props) {
@@ -85,7 +83,7 @@ export default class Notes extends Component {
 		this.setState({ isLoading: true });
 		try {
 			if (this.file) {
-				attachment = await s3Upload(this.file);
+				attachment = "";
 			}
 			await this.saveNote({
 				content: this.state.content,
@@ -116,9 +114,9 @@ export default class Notes extends Component {
 		this.setState({ isDeleting: true });
 		try {
 			if (this.state.note.attachment) {
-				console.log('Dipti calling s3Delete' + this.state.note.attachment);
-				attachmentDel = await s3Delete(this.state.note.attachment);
-				console.log('Dipti' + attachmentDel);
+				
+				attachmentDel = "";
+				
 			}
 			await this.deleteNote();
 			this.props.history.push("/");
