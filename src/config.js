@@ -17,6 +17,19 @@ const pomafocusdev = {
 };
 
 const pomafocusprod = {
+		apiGateway: {
+		REGION: "us-west-2",
+		URL: "https://hr4idm6xy8.execute-api.us-west-2.amazonaws.com/pomafocusProd"
+	},
+	cognito: {
+		REGION: "us-west-2",
+		USER_POOL_ID: "us-west-2_Wsw2FD5dp",
+		APP_CLIENT_ID: "638g576h4vbdo6gobl8a2poco2",
+		IDENTITY_POOL_ID: "us-west-2:1348e714-59c2-4fab-b336-4b0bfb4d7a06"
+	},
+	social: {
+		FB: "542629866184897"
+	}
 };
 
 
