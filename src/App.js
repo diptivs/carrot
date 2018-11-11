@@ -78,11 +78,9 @@ class App extends Component {
     return (
       !this.state.isAuthenticating &&
       <div className="App container">
-        <Navbar fluid collapseOnSelect>
+        <Navbar fluid collapseOnSelect fixedTop>
           <Navbar.Header>
-            <Navbar.Brand>
-              <Link to="/">Travel Notes</Link>
-            </Navbar.Brand>
+              <Link to="/"><img src={process.env.PUBLIC_URL + '/pomafocusIcon.png'} alt="logo" />POMAFOCUS</Link>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
@@ -90,12 +88,12 @@ class App extends Component {
               {this.state.isAuthenticated
                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                 : <Fragment>
-                  <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
-                  </LinkContainer>
-                  <LinkContainer to="/login">
-                    <NavItem>Login</NavItem>
-                  </LinkContainer>
+                    <LinkContainer to="/signup" className="nav-btn">
+                      <NavItem>Signup</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to="/login">
+                      <NavItem className="nav-btn">Login</NavItem>
+                    </LinkContainer>
                 </Fragment>
               }
             </Nav>

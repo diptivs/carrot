@@ -1,16 +1,82 @@
 .App {
-  margin-top: 15px;
+  margin-top: 30px;
+  width: 100%;
+  padding: 10px 30px;
+  color: #42526E;
 }
 
-.App .navbar{
-	background-color: #000000;
-    border-color: #E7E7E7;
-}
-.App .navbar-brand {
+.App .navbar-header a{
   font-weight: bold;
-  color: #c0c0c0;
+  color: #777;
+  text-decoration: none;
+  letter-spacing: 5px;
 }
 
-.App .nav{
-	font-weight: bold;
+.App .navbar-header a img{
+  margin-right: 15px;
+}
+
+i {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.shadow {
+  box-shadow: 0 12px 15px 0 rgba(0,0,0,.24), 0 17px 50px 0 rgba(0,0,0,.19);
+}
+
+.navbar {
+  background-color: #F4F5F7;
+  padding: 5px 30px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+}
+
+.shadow {
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)!important;
+}
+
+.navbar-nav li {
+  margin-left: 5px;
+  -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  /* ...and now for the proper property */
+  transition:.5s;
+}
+
+.navbar-nav li:hover {
+  background: #FF6347;
+  border-radius: 5px;
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover{
+  color: white;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+  background: #FF6347;
+  border-radius: 5px;
+  color: white;
+}
+
+.transition {
+  margin-left: 5px;
+  -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  /* ...and now for the proper property */
+  transition:.5s;
+}
+
+.btn-add {
+  padding: 10px 30px;
+  background-color: #F4F5F7;
+  border: none;
+}
+
+.btn-add:hover {
+  background-color: #FA6449;
+  color: white;
 }
