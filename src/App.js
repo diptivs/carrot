@@ -20,6 +20,7 @@ class App extends Component {
   async componentDidMount() {
 
     this.loadFacebookSDK();
+    this.loadGoogleSDK();
 
     try {
       await Auth.currentSession();
@@ -50,6 +51,16 @@ class App extends Component {
        js.src = "https://connect.facebook.net/en_US/sdk.js";
        gjs.parentNode.insertBefore(js, gjs);
      }(document, 'script', 'facebook-jssdk'));
+  }
+
+    loadGoogleSDK() {
+
+    window.gapi.load('auth2', function() {
+        window.gapi.auth2.init({
+            client_id: config.social.GOOGLE,
+            scope: 'profile email openid'
+        });
+    });
   }
 
   userHasAuthenticated = authenticated => {
