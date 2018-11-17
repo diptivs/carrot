@@ -43,6 +43,7 @@ i {
   -webkit-transition:.5s;
   /* ...and now for the proper property */
   transition:.5s;
+  letter-spacing: 2px;
 }
 
 .navbar-nav li:hover {
@@ -61,7 +62,6 @@ i {
 }
 
 .transition {
-  margin-left: 5px;
   -o-transition:.5s;
   -ms-transition:.5s;
   -moz-transition:.5s;
@@ -79,4 +79,73 @@ i {
 .btn-add:hover {
   background-color: #FA6449;
   color: white;
+}
+
+/* Poma btn */
+.btn-poma {
+  background-color: #FA6449;
+  color: white;
+  border: none;
+}
+.btn-poma:hover {
+  background-color: #FA6449;
+  color: white;
+  border: none;
+}
+
+.btn-poma:hover, .clasbtn-poma:active, .btn-poma:focus {
+  background-color: #FA6449;
+  color: white;
+  border: none;
+}
+
+/* Poma btn cancel */
+.btn-poma-cancel {
+  background-color: #FDBF49;
+  color: white;
+  border: none;
+}
+.btn-poma-cancel:hover, .clasbtn-poma-cancel:active, .btn-poma-cancel:focus {
+  background-color: #FDBF49;
+  color: white;
+  border: none;
+}
+
+.modal-step-title {
+  text-align: center;
+  font-weight: bold;
+}
+
+.modal-step-body {
+  padding: 15px;
+}
+
+.modal-step-badges {
+  text-align: center;
+}
+.modal-step-badges span{
+  margin: 10px;
+  background-color: #D3D3D3;
+  padding: 5px 10px;
+}
+.modal-step-badges .active{
+  background-color: #808080;
+}
+
+form input {
+  margin-bottom: 10px;
+}
+
+.flex-container {
+  display: inline-block;
+}
+
+.contributor-label {
+  padding: 10px 15px;
+  margin: 5px;
+  background-color: #4682B4;
+}
+
+.remove-circle {
+  cursor: pointer;
 }

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { PageHeader, DropdownButton, Dropdown, MenuItem } from "react-bootstrap";
+import { PageHeader, DropdownButton, Button, MenuItem } from "react-bootstrap";
 import "react-table/react-table.css";
 import Calendar from "./calendar";
+import PomaAddTaskModal from "../../components/PomaAddTaskModal";
+import PomaAddProjectModal from "../../components/PomaAddProjectModal";
 
 export default class PomaHome extends Component {
 
@@ -13,18 +15,31 @@ export default class PomaHome extends Component {
 			email: false,
 			firstname: "",
 			lastname: "",
+			showAddTaskModal: false,
+			showAddProjectModal: false
 		};
 	}
 
-	createTask() {
-		console.log('create task');
+	createTask = () => {
+		this.setState({ showAddTaskModal: true });
 	}
 
-	createProgram() {
-		console.log('create program');
+	createProgram = () => {
+		this.setState({ showAddProjectModal: true });
+	}
+
+	handleTaskModalHide = (data, isSubmit) => {
+		console.log(data, isSubmit);
+		this.setState({ showAddTaskModal: false });
+	}
+
+	handleProjectModalHide = (data, isSubmit) => {
+		console.log(data, isSubmit);
+		this.setState({ showAddProjectModal: false });
 	}
 
 	render() {
+		const { showAddProjectModal, showAddTaskModal } = this.state;
 		return (
 			<div className="notes">
 				<PageHeader>
@@ -41,6 +56,8 @@ export default class PomaHome extends Component {
 						</DropdownButton>
 				</PageHeader>
                 <Calendar/>
+				<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide}/>
+				<PomaAddProjectModal show={showAddProjectModal} handleClose={this.handleProjectModalHide}/>
 			</div>
 		);
 	}
