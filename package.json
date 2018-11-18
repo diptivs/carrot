@@ -6,6 +6,7 @@
     "aws-amplify": "^1.1.7",
     "moment": "^2.22.2",
     "react": "^16.6.3",
+    "react-addons-update": "^15.6.2",
     "react-big-calendar": "^0.20.2",
     "react-bootstrap": "^0.32.4",
     "react-dates": "^18.2.2",
