@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { API } from "aws-amplify";
 import { Modal, Button, Badge, FormControl } from "react-bootstrap";
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import moment from 'moment';
@@ -39,17 +40,28 @@ export default class PomaAddProjectModal extends Component {
         this.setState({ [id]: value });
     }
 
-    handleEnter = (e) => {
-        const { target: { id, value }, charCode } = e;
+    handleEmailEnter = async (e) => {
+        const { target: { value }, charCode } = e;
         if (charCode === 13) {
             e.preventDefault();
             this.setState((prevState) => {
                 let newContributorsList = prevState.projectContributors;
                 newContributorsList.push(value);
                 return { projectContributors: newContributorsList, contributors: '' };
-            })
+            });
+            const subId = await this.getUserInfo(value);
+            console.log(subId);
         }
     }
+
+    getUserInfo = (email) => {
+        // return API.get("api", `/api/user/?emailId=${email}`);
+        return API.get("api", "/api/user", {
+            'queryStringParameters': {
+                'emailId': email,
+            },
+        });
+    };
 
     deleteContributor = (index) => {
         this.setState((prevState) => {
@@ -134,13 +146,13 @@ export default class PomaAddProjectModal extends Component {
                         placeholder="Enter an email and press enter"
                         value={this.state.contributors}
                         onChange={this.handleChange}
-                        onKeyPress={this.handleEnter}
+                        onKeyPress={this.handleEmailEnter}
                     />
                 </form>
                 <div className="flex-container">
                 {
                     projectContributors.map((contributor, index) => {
-                        return <Badge className="contributor-label"><i class="far fa-times-circle remove-circle" onClick={() => this.deleteContributor(index)}/>{contributor}</Badge>
+                        return <Badge className="contributor-label"><i className="far fa-times-circle remove-circle" onClick={() => this.deleteContributor(index)}/>{contributor}</Badge>
                     })
                 }
                 </div>
@@ -193,7 +205,7 @@ export default class PomaAddProjectModal extends Component {
         });
 
         return (
-            <Modal show={this.props.show} onHide={this.props.handleClose} backdrop="static" keyboard={false}>
+            <Modal show={this.props.show} onHide={() => this.props.handleClose(null, false)} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add a Project</Modal.Title>
                 </Modal.Header>
@@ -204,13 +216,13 @@ export default class PomaAddProjectModal extends Component {
                     <div className="modal-step-body">{ steps[this.state.step].content }</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(this.state, false)}>Close</Button>
+                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
                     <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
                         <Button bsStyle="poma" className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
                     }
                     {this.state.step === steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
+                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, false)}>Submit</Button>
                     }
                 </Modal.Footer>
             </Modal>

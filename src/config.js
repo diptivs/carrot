@@ -3,7 +3,7 @@
 const pomafocusdev = {
 	apiGateway: {
 		REGION: "us-west-2",
-		URL: "https://ou5tkzfluj.execute-api.us-west-2.amazonaws.com/pomafocusDev"
+		URL: "https://99tc53sae1.execute-api.us-west-2.amazonaws.com/dev"
 	},
 	cognito: {
 		REGION: "us-west-2",

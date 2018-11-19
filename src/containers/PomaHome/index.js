@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { PageHeader, DropdownButton, Button, MenuItem } from "react-bootstrap";
+import { API } from "aws-amplify";
+import { PageHeader, DropdownButton, MenuItem } from "react-bootstrap";
 import "react-table/react-table.css";
 import Calendar from "./calendar";
 import PomaAddTaskModal from "../../components/PomaAddTaskModal";
@@ -30,7 +31,22 @@ export default class PomaHome extends Component {
 
 	handleTaskModalHide = (data, isSubmit) => {
 		console.log(data, isSubmit);
+		const { projectName, projectDescription, projectContributors, projectStartDate, projectEndDate } = data;
 		this.setState({ showAddTaskModal: false });
+		if (!isSubmit) {
+			return;
+		}
+		API.post("api", "/api/project", {
+            body: {
+				projectName,
+				projectDescription,
+				projectStatus: "New",
+				projectOwner: null,
+				projectContributors: projectContributors,
+				projectStartDate,
+				projectEndDate,
+			}
+        });
 	}
 
 	handleProjectModalHide = (data, isSubmit) => {
