@@ -4,7 +4,7 @@ import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Auth } from "aws-amplify";
 import FacebookButton from "../components/FacebookButton";
-
+import GoogleButton from "../components/GoogleButton";
 
 export default class Login extends Component {
 	constructor(props) {

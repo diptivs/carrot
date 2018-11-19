@@ -64,7 +64,7 @@ export default class GoogleButton extends Component {
 
     try {
       const response = await Auth.federatedSignIn(
-              'google',
+              "google",
               { id_token, expires_at },
               user
           );
