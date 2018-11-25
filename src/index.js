@@ -8,6 +8,7 @@ import Amplify from "aws-amplify";
 import config from "./config";
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 Amplify.configure({
 	Auth: {

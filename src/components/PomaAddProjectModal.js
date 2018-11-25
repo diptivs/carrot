@@ -16,6 +16,7 @@ export default class PomaAddProjectModal extends Component {
             projectContributors: [],
             startDate: null,
             endDate: null,
+            error: null,
 		};
     }
 
@@ -44,21 +45,27 @@ export default class PomaAddProjectModal extends Component {
         const { target: { value }, charCode } = e;
         if (charCode === 13) {
             e.preventDefault();
-            this.setState((prevState) => {
-                let newContributorsList = prevState.projectContributors;
-                newContributorsList.push(value);
-                return { projectContributors: newContributorsList, contributors: '' };
-            });
             const subId = await this.getUserInfo(value);
-            console.log(subId);
+            const { userId } = subId.Items.length ? subId.Items[0] : { userId: null };
+            if (userId) {
+                console.log(userId);
+                this.setState((prevState) => {
+                    let newContributorsList = prevState.projectContributors;
+                    newContributorsList.push(value);
+                    return { projectContributors: newContributorsList, contributors: '', error: null };
+                });
+            } else {
+                this.setState({
+                    error: `No user for the email (${value}) exists.`,
+                })
+            }
         }
     }
 
     getUserInfo = (email) => {
-        // return API.get("api", `/api/user/?emailId=${email}`);
         return API.get("api", "/api/user", {
-            'queryStringParameters': {
-                'emailId': email,
+            queryStringParameters: {
+                emailId: email,
             },
         });
     };
@@ -216,6 +223,7 @@ export default class PomaAddProjectModal extends Component {
                     <div className="modal-step-body">{ steps[this.state.step].content }</div>
                 </Modal.Body>
                 <Modal.Footer>
+                    <div className="pull-left">{ this.state.error }</div>
                     <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
                     <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
