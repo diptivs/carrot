@@ -32,6 +32,18 @@ export default class PomaHome extends Component {
 		this.setState({ showAddTaskModal: false });
 		if (!isSubmit) {
 			return;
+		} else {
+			const { projectId, taskName, taskDescription, taskPomodoroCount } = data;
+			API.post("api", "/api/task", {
+				body: {
+					projectId,
+					taskName,
+					taskDescription,
+					taskStatus: "New",
+					taskPomodoroCount,
+					userId: this.props.sub,
+				}
+			});
 		}
 	}
 
@@ -73,7 +85,7 @@ export default class PomaHome extends Component {
 						</DropdownButton>
 				</PageHeader>
                 <Calendar/>
-				<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide}/>
+				<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide} sub={this.props.sub}/>
 				<PomaAddProjectModal show={showAddProjectModal} handleClose={this.handleProjectModalHide}/>
 			</div>
 		);
