@@ -7,7 +7,7 @@ import {
 } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
 import "./Signup.css";
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import FacebookButton from "../components/FacebookButton";
 
 export default class Signup extends Component {
@@ -48,16 +48,17 @@ handleChange = event => {
 
 
 handleSubmit = async event => {
+	const { firstname, lastname, email, password } = this.state;
 	event.preventDefault();
 	this.setState({ isLoading: true });
 	try {
 		const newUser = await Auth.signUp({
-		username: this.state.email,
-		password: this.state.password,
-		'attributes':{
-			given_name: this.state.firstname,
-			family_name: this.state.lastname
-		}
+			username: email,
+			password: password,
+			'attributes':{
+				given_name: firstname,
+				family_name: lastname
+			}
 		});
 		this.setState({
 			newUser
@@ -68,13 +69,26 @@ handleSubmit = async event => {
 	this.setState({ isLoading: false });
 }
 
+// Creates the user in users table
+createUser(firstName, lastName, emailId) {
+	return API.post("api", "/api/user", {
+		body: {
+			firstName,
+			lastName,
+			emailId,
+			role: 'developer',
+		}
+	});
+}
 
 handleConfirmationSubmit = async event => {
+	const { firstname, lastname, email, password, confirmationCode } = this.state;
 	event.preventDefault();
 	this.setState({ isLoading: true });
 	try {
-		await Auth.confirmSignUp(this.state.email,this.state.confirmationCode);
-		await Auth.signIn(this.state.email, this.state.password);
+		await Auth.confirmSignUp(email, confirmationCode);
+		await Auth.signIn(email, password);
+		this.createUser(firstname, lastname, email)
 		this.props.userHasAuthenticated(true);
 		this.props.history.push("/");
 	} catch (e) {
