@@ -223,7 +223,7 @@ export default class PomaAddProjectModal extends Component {
                     <div className="modal-step-body">{ steps[this.state.step].content }</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className="pull-left">{ this.state.error }</div>
+                    <div className="pull-left error-text">{ this.state.error }</div>
                     <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
                     <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
