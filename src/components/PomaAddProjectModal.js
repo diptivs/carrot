@@ -14,6 +14,7 @@ export default class PomaAddProjectModal extends Component {
             projectDescription: '',
             contributors: '',
             projectContributors: [],
+            projectContributorsIDs: [],
             startDate: null,
             endDate: null,
             error: null,
@@ -48,11 +49,12 @@ export default class PomaAddProjectModal extends Component {
             const subId = await this.getUserInfo(value);
             const { userId } = subId.Items.length ? subId.Items[0] : { userId: null };
             if (userId) {
-                console.log(userId);
                 this.setState((prevState) => {
                     let newContributorsList = prevState.projectContributors;
+                    let newContributorsListIDs = prevState.projectContributorsIDs;
                     newContributorsList.push(value);
-                    return { projectContributors: newContributorsList, contributors: '', error: null };
+                    newContributorsListIDs.push(userId);
+                    return { projectContributors: newContributorsList, projectContributorsIDs: newContributorsListIDs, contributors: '', error: null };
                 });
             } else {
                 this.setState({
@@ -73,8 +75,10 @@ export default class PomaAddProjectModal extends Component {
     deleteContributor = (index) => {
         this.setState((prevState) => {
             let newContributorsList = prevState.projectContributors;
+            let newContributorsListIDs = prevState.projectContributorsIDs;
             newContributorsList.splice(index, 1);
-            return { projectContributors: newContributorsList, contributors: '' };
+            newContributorsListIDs.splice(index, 1);
+            return { projectContributors: newContributorsList, projectContributorsIDs: newContributorsListIDs, contributors: '' };
         })
     }
 
@@ -230,7 +234,7 @@ export default class PomaAddProjectModal extends Component {
                         <Button bsStyle="poma" className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
                     }
                     {this.state.step === steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, false)}>Submit</Button>
+                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
                     }
                 </Modal.Footer>
             </Modal>

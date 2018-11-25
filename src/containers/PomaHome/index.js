@@ -10,7 +10,6 @@ export default class PomaHome extends Component {
 
 	constructor(props) {
         super(props);
-        console.log(props);
 		this.state = {
 			isLoading: true,
 			email: false,
@@ -30,28 +29,30 @@ export default class PomaHome extends Component {
 	}
 
 	handleTaskModalHide = (data, isSubmit) => {
-		console.log(data, isSubmit);
-		const { projectName, projectDescription, projectContributors, projectStartDate, projectEndDate } = data;
 		this.setState({ showAddTaskModal: false });
 		if (!isSubmit) {
 			return;
 		}
-		API.post("api", "/api/project", {
-            body: {
-				projectName,
-				projectDescription,
-				projectStatus: "New",
-				projectOwner: null,
-				projectContributors: projectContributors,
-				projectStartDate,
-				projectEndDate,
-			}
-        });
 	}
 
 	handleProjectModalHide = (data, isSubmit) => {
-		console.log(data, isSubmit);
 		this.setState({ showAddProjectModal: false });
+		if (!isSubmit) {
+			return;
+		} else {
+			const { projectName, projectDescription, projectContributorsIDs, startDate, endDate } = data;
+			API.post("api", "/api/project", {
+				body: {
+					projectName,
+					projectDescription,
+					projectStatus: "New",
+					projectOwner: this.props.sub,
+					projectContributors: projectContributorsIDs,
+					projectStartDate: startDate.format('X'),
+					projectEndDate: endDate.format('X'),
+				}
+			});
+		}
 	}
 
 	render() {

@@ -37,14 +37,10 @@ export default class NotesHome extends Component {
 
 		if(!this.props.isFedAuth)
 		{
-			console.log("Dipti1: ");
-			console.log(info);
 
 			var strEmail = info.attributes['email'];
 			if(strEmail.trim() === "admin@example.com")
 			this.setState({email : true});
-
-			console.log(strEmail + this.state.email);
 
 	    	var strFirstName = info.attributes['given_name'];
 	    	this.setState({firstname : strFirstName });
@@ -116,7 +112,6 @@ export default class NotesHome extends Component {
 
 	renderNotesTable(){
 		const convertedObject = Object.values(this.state.notes);
-		console.log(convertedObject);
 		return (
 			
 				<div>
