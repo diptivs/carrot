@@ -5,13 +5,16 @@
   "dependencies": {
     "aws-amplify": "^1.1.7",
     "moment": "^2.22.2",
-    "react": "^16.5.2",
+    "react": "^16.6.3",
+    "react-addons-update": "^15.6.2",
     "react-big-calendar": "^0.20.2",
     "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.5.2",
+    "react-dates": "^18.2.2",
+    "react-dom": "^16.6.3",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
+    "react-select": "^2.1.1",
     "react-table": "^6.8.6"
   },
   "scripts": {
