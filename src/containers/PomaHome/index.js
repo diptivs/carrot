@@ -69,7 +69,6 @@ export default class PomaHome extends Component {
 
 	render() {
 		const { showAddProjectModal, showAddTaskModal } = this.state;
-		console.log(this.props);
 		return (
 			<div className="notes">
 				<PageHeader>

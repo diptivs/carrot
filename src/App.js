@@ -13,7 +13,8 @@ class App extends Component {
     this.state = {
       isAuthenticated: false,
       isFedAuth: false,
-      isAuthenticating: true
+      isAuthenticating: true,
+      id: null
     };
   }
 
@@ -24,7 +25,9 @@ class App extends Component {
 
     try {
       await Auth.currentSession();
+      const test = await Auth.currentUserInfo();
       this.userHasAuthenticated(true);
+      this.setUserId(test.id);
     }
     catch(e) {
       if (e !== 'No current user') {
@@ -69,6 +72,10 @@ class App extends Component {
     });
   }
 
+  setUserId = (id) => {
+    this.setState({ id });
+  }
+
   userHasFedAuthenticated = authenticated => {
     this.setState({ isFedAuth: authenticated });
   }
@@ -85,6 +92,7 @@ class App extends Component {
       isFedAuth: this.state.isFedAuth,
       userHasAuthenticated: this.userHasAuthenticated,
       userHasFedAuthenticated: this.userHasFedAuthenticated,
+      id: this.state.id
     };
 
     return (
