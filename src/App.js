@@ -63,8 +63,12 @@ class App extends Component {
     });
   }
 
-  userHasAuthenticated = authenticated => {
-    this.setState({ isAuthenticated: authenticated });
+  userHasAuthenticated = async (authenticated) => {
+    const info = await Auth.currentUserInfo();
+    this.setState({
+      isAuthenticated: authenticated,
+      sub: info.attributes.sub
+    });
   }
 
   userHasFedAuthenticated = authenticated => {
@@ -78,14 +82,15 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state);
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
       isFedAuth: this.state.isFedAuth,
       userHasAuthenticated: this.userHasAuthenticated,
-      userHasFedAuthenticated: this.userHasFedAuthenticated
+      userHasFedAuthenticated: this.userHasFedAuthenticated,
+      sub: this.state.sub
     };
 
-    
     return (
       !this.state.isAuthenticating &&
       <div className="App container">

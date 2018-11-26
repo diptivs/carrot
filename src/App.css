@@ -166,6 +166,13 @@ a:hover {
   padding: 3px 10px;
 }
 
+.error-text {
+  font-weight: bold;
+  font-size: 14px;
+  color: indianred;
+  padding: 5px;
+}
+
 /* Margin classes */
 .mb-1 {
   margin-bottom: .25rem!important;

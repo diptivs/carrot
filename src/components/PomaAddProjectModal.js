@@ -14,8 +14,10 @@ export default class PomaAddProjectModal extends Component {
             projectDescription: '',
             contributors: '',
             projectContributors: [],
+            projectContributorsIDs: [],
             startDate: null,
             endDate: null,
+            error: null,
 		};
     }
 
@@ -44,21 +46,28 @@ export default class PomaAddProjectModal extends Component {
         const { target: { value }, charCode } = e;
         if (charCode === 13) {
             e.preventDefault();
-            this.setState((prevState) => {
-                let newContributorsList = prevState.projectContributors;
-                newContributorsList.push(value);
-                return { projectContributors: newContributorsList, contributors: '' };
-            });
             const subId = await this.getUserInfo(value);
-            console.log(subId);
+            const { userId } = subId.Items.length ? subId.Items[0] : { userId: null };
+            if (userId) {
+                this.setState((prevState) => {
+                    let newContributorsList = prevState.projectContributors;
+                    let newContributorsListIDs = prevState.projectContributorsIDs;
+                    newContributorsList.push(value);
+                    newContributorsListIDs.push(userId);
+                    return { projectContributors: newContributorsList, projectContributorsIDs: newContributorsListIDs, contributors: '', error: null };
+                });
+            } else {
+                this.setState({
+                    error: `No user for the email (${value}) exists.`,
+                })
+            }
         }
     }
 
     getUserInfo = (email) => {
-        // return API.get("api", `/api/user/?emailId=${email}`);
         return API.get("api", "/api/user", {
-            'queryStringParameters': {
-                'emailId': email,
+            queryStringParameters: {
+                emailId: email,
             },
         });
     };
@@ -66,8 +75,10 @@ export default class PomaAddProjectModal extends Component {
     deleteContributor = (index) => {
         this.setState((prevState) => {
             let newContributorsList = prevState.projectContributors;
+            let newContributorsListIDs = prevState.projectContributorsIDs;
             newContributorsList.splice(index, 1);
-            return { projectContributors: newContributorsList, contributors: '' };
+            newContributorsListIDs.splice(index, 1);
+            return { projectContributors: newContributorsList, projectContributorsIDs: newContributorsListIDs, contributors: '' };
         })
     }
 
@@ -216,13 +227,14 @@ export default class PomaAddProjectModal extends Component {
                     <div className="modal-step-body">{ steps[this.state.step].content }</div>
                 </Modal.Body>
                 <Modal.Footer>
+                    <div className="pull-left error-text">{ this.state.error }</div>
                     <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
                     <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
                         <Button bsStyle="poma" className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
                     }
                     {this.state.step === steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, false)}>Submit</Button>
+                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
                     }
                 </Modal.Footer>
             </Modal>

@@ -51,7 +51,6 @@ export default class Admin extends Component {
 	renderNotesTable(){
 		const convertedObject = Object.values(this.state.notes);
 
-		console.log(convertedObject);
 		return (
 			
 			<div>

@@ -1,18 +1,32 @@
+import { API } from "aws-amplify";
 import React, { Component } from "react";
-import { Modal, Button, Badge, FormControl } from "react-bootstrap";
+import { Modal, Button, Badge, FormControl, FormGroup, ControlLabel } from "react-bootstrap";
 
 export default class PomaAddTaskModal extends Component {
 
 	constructor(props) {
         super(props);
 		this.state = {
-			step: 0,
+            step: 0,
+            projects: [],
 		};
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps = async () => {
+        if (this.props.sub) {
+            const projects = await this.getUserProjects(this.props.sub);
+            this.setState({ projects: projects.Items });
+        }
         this.setState({ step: 0 });
     }
+
+    getUserProjects = (userId) => {
+        return API.get("api", "/api/project", {
+            queryStringParameters: {
+                userId,
+            },
+        });
+    };
 
     next = () => {
         this.setState((prevState) => {
@@ -29,6 +43,13 @@ export default class PomaAddTaskModal extends Component {
     handleChange = (e) => {
         const { target: { id, value } } = e;
         this.setState({ [id]: value });
+    }
+
+    handleSelect = (e) => {
+        const { target: { value } } = e;
+        const index = e.nativeEvent.target.selectedIndex;
+        const projectName = e.nativeEvent.target[index].text;
+        this.setState({ projectId: value, projectName });
     }
 
     renderStep1() {
@@ -62,6 +83,36 @@ export default class PomaAddTaskModal extends Component {
             </form>
         )
     }
+
+    renderStep2() {
+        return (
+            <FormGroup controlId="formControlsSelect">
+                <ControlLabel>Project</ControlLabel>
+                <FormControl componentClass="select" placeholder="select" onChange={this.handleSelect}>
+                    <option value="select">Select the project this task belongs to</option>
+                {
+                    this.state.projects.map((project) => {
+                        const { projectId, projectName } = project;
+                        return <option value={projectId}>{projectName}</option>
+                    })
+                }
+                </FormControl>
+            </FormGroup>
+        )
+    }
+
+    renderStep3 = () => {
+        const { taskName, taskDescription, taskPomodoroCount, projectName } = this.state;
+        return (
+            <div>
+               <div><strong>Task Name: </strong>{taskName}</div>
+               <div><strong>Task Pomodoro Count: </strong>{taskPomodoroCount}</div>
+               <div><strong>Task Description: </strong>{taskDescription}</div>
+               <div><strong>Project: </strong>{projectName}</div>
+            </div>
+        )
+    }
+
 	render() {
         const steps = [
             {
@@ -70,11 +121,11 @@ export default class PomaAddTaskModal extends Component {
             },
             {
                 title: 'Project',
-                content: <div>Well, heres step 2!</div>
+                content: this.renderStep2()
             },
             {
                 title: 'Review',
-                content: <div>Almost done! Step 3!</div>
+                content: this.renderStep3()
             },
         ]
         let stepBadges = [];
@@ -94,13 +145,13 @@ export default class PomaAddTaskModal extends Component {
                     <div className="modal-step-body">{ steps[this.state.step].content }</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={this.props.handleClose}>Close</Button>
+                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
                     <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
                         <Button bsStyle="poma" className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
                     }
                     {this.state.step === steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={this.props.handleClose}>Submit</Button>
+                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
                     }
                 </Modal.Footer>
             </Modal>

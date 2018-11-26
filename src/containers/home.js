@@ -12,7 +12,8 @@ export default class Home extends Component {
 			isLoading: true,
 			email: false,
 			firstname: "",
-			lastname: ""
+			lastname: "",
+			sub: ""
 		};
 	}
 
@@ -29,6 +30,9 @@ export default class Home extends Component {
 
 		if(!this.props.isFedAuth)
 		{
+			// Fetch sub
+			this.setState({sub: info.attributes.sub});
+
 			// Fetch email
 			var strEmail = info.attributes['email'];
 			if(strEmail.trim() === "admin@example.com")
@@ -40,14 +44,15 @@ export default class Home extends Component {
 			
 			// Fetch lastname
 	    	var strLastName = info.attributes['family_name'];
-	    	this.setState({lastname : strLastName });
+			this.setState({lastname : strLastName });
+			
 	    }
 	}
 	render() {
-		const { firstname, lastname, email } = this.state;
+		const { firstname, lastname, email, sub } = this.state;
 		return (
 			<div className="Home">
-				{this.props.isAuthenticated ? <PomaHome firstname={firstname} lastname={lastname} email={email}/> : <Lander/>}
+				{this.props.isAuthenticated ? <PomaHome firstname={firstname} lastname={lastname} sub={sub} email={email}/> : <Lander/>}
 			</div>
 		);
 	}
