@@ -212,7 +212,7 @@ export default class PomaAddProjectModal extends Component {
         ]
         let stepBadges = [];
         steps.forEach((step, index) => {
-            stepBadges.push(<Badge className={index === this.state.step ? 'active' : ''}>{step.title}</Badge>)
+            stepBadges.push(<Badge key={index} className={index === this.state.step ? 'active' : ''}>{step.title}</Badge>)
         });
 
         return (

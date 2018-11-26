@@ -13,8 +13,8 @@ export default class Tasks extends Component {
 	};
 
 	async componentDidMount() {
-        if (this.props.sub) {
-            const projects = await this.getUserProjects(this.props.sub);
+        if (this.props.id) {
+            const projects = await this.getUserProjects(this.props.id);
             this.setState({ projects: projects.Items });
         }
     }

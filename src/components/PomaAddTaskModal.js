@@ -13,8 +13,8 @@ export default class PomaAddTaskModal extends Component {
     }
 
     componentWillReceiveProps = async () => {
-        if (this.props.sub) {
-            const projects = await this.getUserProjects(this.props.sub);
+        if (this.props.id) {
+            const projects = await this.getUserProjects(this.props.id);
             this.setState({ projects: projects.Items });
         }
         this.setState({ step: 0 });
@@ -130,7 +130,7 @@ export default class PomaAddTaskModal extends Component {
         ]
         let stepBadges = [];
         steps.forEach((step, index) => {
-            stepBadges.push(<Badge className={index === this.state.step ? 'active' : ''}>{step.title}</Badge>)
+            stepBadges.push(<Badge key={index} className={index === this.state.step ? 'active' : ''}>{step.title}</Badge>)
         });
 
         return (

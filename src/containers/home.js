@@ -27,11 +27,10 @@ export default class Home extends Component {
 
 	async getUserInfo() {
 		const info = await Auth.currentUserInfo();
-
 		if(this.props.isAuthenticated)
 		{
-			// Fetch sub
-			this.setState({sub: info ? info.attributes.sub : null});
+			// Fetch id
+			this.setState({id: info ? info.id : null});
 
 			// Fetch email
 			var strEmail = info.attributes['email'];
@@ -49,10 +48,10 @@ export default class Home extends Component {
 	    }
 	}
 	render() {
-		const { firstname, lastname, email, sub } = this.state;
+		const { firstname, lastname, email, id } = this.state;
 		return (
 			<div className="Home">
-				{this.props.isAuthenticated ? <PomaHome firstname={firstname} lastname={lastname} sub={sub} email={email}/> : <Lander/>}
+				{this.props.isAuthenticated ? <PomaHome firstname={firstname} lastname={lastname} id={id} email={email}/> : <Lander/>}
 			</div>
 		);
 	}

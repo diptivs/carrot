@@ -41,7 +41,7 @@ export default class PomaHome extends Component {
 					taskDescription,
 					taskStatus: "New",
 					taskPomodoroCount,
-					userId: this.props.sub,
+					userId: this.props.id,
 				}
 			});
 		}
@@ -58,7 +58,7 @@ export default class PomaHome extends Component {
 					projectName,
 					projectDescription,
 					projectStatus: "New",
-					projectOwner: this.props.sub,
+					projectOwner: this.props.id,
 					projectContributors: projectContributorsIDs,
 					projectStartDate: startDate.format('X'),
 					projectEndDate: endDate.format('X'),
@@ -69,6 +69,7 @@ export default class PomaHome extends Component {
 
 	render() {
 		const { showAddProjectModal, showAddTaskModal } = this.state;
+		console.log(this.props);
 		return (
 			<div className="notes">
 				<PageHeader>
@@ -85,7 +86,7 @@ export default class PomaHome extends Component {
 						</DropdownButton>
 				</PageHeader>
                 <Calendar/>
-				<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide} sub={this.props.sub}/>
+				<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide} id={this.props.id}/>
 				<PomaAddProjectModal show={showAddProjectModal} handleClose={this.handleProjectModalHide}/>
 			</div>
 		);
