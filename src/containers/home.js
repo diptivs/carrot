@@ -28,10 +28,10 @@ export default class Home extends Component {
 	async getUserInfo() {
 		const info = await Auth.currentUserInfo();
 
-		if(!this.props.isFedAuth)
+		if(this.props.isAuthenticated)
 		{
 			// Fetch sub
-			this.setState({sub: info.attributes.sub});
+			this.setState({sub: info ? info.attributes.sub : null});
 
 			// Fetch email
 			var strEmail = info.attributes['email'];

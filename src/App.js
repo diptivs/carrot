@@ -67,7 +67,7 @@ class App extends Component {
     const info = await Auth.currentUserInfo();
     this.setState({
       isAuthenticated: authenticated,
-      sub: info.attributes.sub
+      sub: info ? info.attributes.sub : null
     });
   }
 
