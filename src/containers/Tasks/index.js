@@ -1,7 +1,7 @@
-
-import { LinkContainer } from "react-router-bootstrap";
+import { API } from "aws-amplify";
 import React, { Component } from "react";
 import { Panel, Alert, Badge } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "./tasks.css";
 
 export default class Tasks extends Component {
@@ -11,6 +11,22 @@ export default class Tasks extends Component {
 		this.state = {
 		};
 	};
+
+	async componentDidMount() {
+        if (this.props.sub) {
+            const projects = await this.getUserProjects(this.props.sub);
+            this.setState({ projects: projects.Items });
+        }
+    }
+
+    getUserProjects = (userId) => {
+        return API.get("api", "/api/project", {
+            queryStringParameters: {
+                userId,
+            },
+        });
+    };
+
 	renderProjectPanel = () => {
 		return (
 		<Panel id="collapsible-panel-example-2" defaultExpanded>
