@@ -12,7 +12,8 @@ const pomafocusdev = {
 		IDENTITY_POOL_ID: "us-west-2:09d04c0b-65ad-45f0-a955-c7aaa9b9cd3b"
 	},
 	social: {
-		FB: "2259819917380032"
+		FB: "2259819917380032",
+		GOOGLE: "139912536088-gvpkam6e5tj0u58ms2qfledkc93g954p.apps.googleusercontent.com"
 	}
 };
 

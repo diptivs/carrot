@@ -4,7 +4,7 @@ import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Auth } from "aws-amplify";
 import FacebookButton from "../components/FacebookButton";
-
+import GoogleButton from "../components/GoogleButton";
 
 export default class Login extends Component {
 	constructor(props) {
@@ -44,12 +44,21 @@ export default class Login extends Component {
   		this.props.userHasFedAuthenticated(true);
 	};
 
+	handleGoogleLogin = () => {
+  		this.props.userHasAuthenticated(true);
+  		this.props.userHasFedAuthenticated(true);
+	};
+
 	render() {
 		return (
 			<div className="Login">
 				<form onSubmit={this.handleSubmit}>
 					<FacebookButton
 	  					onLogin={this.handleFbLogin}
+					/>
+					<hr />
+					<GoogleButton
+	  					onLogin={this.handleGoogleLogin}
 					/>
 					<hr />
 					<FormGroup controlId="email" bsSize="large">
