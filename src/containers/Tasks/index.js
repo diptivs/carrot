@@ -84,7 +84,7 @@ export default class Tasks extends Component {
 						<Badge className="pull-left mr-2">{taskCount.toComplete} left</Badge>
 						<Badge className="pull-left">{taskCount.completed} completed</Badge>
 					</Panel.Toggle>
-					<span className="pointer" onClick={() => this.handleClick(project)}>{ projectName }</span>
+					<span className="pointer" onClick={() => this.handleClick(project)}><i class="fas fa-pencil-alt"/>{ projectName }</span>
 					<Panel.Toggle componentClass="a">
 						<span className="pull-right"><i className="far fa-eye"/></span>
 						<span className="pull-right"><i className="far fa-eye-slash"/></span>					
