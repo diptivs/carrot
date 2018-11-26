@@ -3,6 +3,9 @@ import { API } from "aws-amplify";
 import { Modal, Button, Badge, FormControl } from "react-bootstrap";
 import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import moment from 'moment';
+import { ADD_PROJECT_MODAL } from "../constants";
+
+const { EDIT_TITLE, ADD_TITLE } = ADD_PROJECT_MODAL;
 
 export default class PomaAddProjectModal extends Component {
 
@@ -19,6 +22,29 @@ export default class PomaAddProjectModal extends Component {
             endDate: null,
             error: null,
 		};
+    }
+
+    async componentDidMount() {
+        if (!this.props.data) {
+            return;
+        }
+        const { projectId, projectStatus, projectName, projectDescription, projectContributors, projectEndDate, projectStartDate, } = this.props.data;
+        const projectContributorsList = [];
+        projectContributors.values.forEach(async (contributor) => {
+            const userInfo = await this.getUserInfo(contributor);
+            projectContributorsList.push(userInfo.emailId);
+        });
+
+        this.setState({
+            projectId,
+            projectStatus,
+            projectName,
+            projectDescription,
+            projectContributors: projectContributorsList,
+            projectContributorsIDs: projectContributors.values,
+            startDate: moment(Number(projectStartDate)),
+            endDate: moment(Number(projectEndDate))
+        });
     }
 
     componentWillReceiveProps() {
@@ -71,6 +97,8 @@ export default class PomaAddProjectModal extends Component {
             },
         });
     };
+
+	getUserInfo = (userId) => API.get("api", `/api/user/${userId}`);
 
     deleteContributor = (index) => {
         this.setState((prevState) => {
@@ -163,7 +191,7 @@ export default class PomaAddProjectModal extends Component {
                 <div className="flex-container">
                 {
                     projectContributors.map((contributor, index) => {
-                        return <Badge className="contributor-label"><i className="far fa-times-circle remove-circle" onClick={() => this.deleteContributor(index)}/>{contributor}</Badge>
+                        return <Badge key={index} className="contributor-label"><i className="far fa-times-circle remove-circle" onClick={() => this.deleteContributor(index)}/>{contributor}</Badge>
                     })
                 }
                 </div>
@@ -183,7 +211,7 @@ export default class PomaAddProjectModal extends Component {
                     <strong>End date: </strong>
                 {
                     projectContributors.map((contributor, index) => {
-                        return <Badge className="contributor-label">{contributor}</Badge>
+                        return <Badge key={index} className="contributor-label">{contributor}</Badge>
                     })
                 }
                 </div>
@@ -218,7 +246,7 @@ export default class PomaAddProjectModal extends Component {
         return (
             <Modal show={this.props.show} onHide={() => this.props.handleClose(null, false)} backdrop="static" keyboard={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add a Project</Modal.Title>
+                    <Modal.Title>{this.props.edit ? EDIT_TITLE : ADD_TITLE}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="modal-step-badges"> 

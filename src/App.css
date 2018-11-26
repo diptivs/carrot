@@ -153,6 +153,10 @@ form input {
   background-color: #4682B4;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .remove-circle {
   cursor: pointer;
 }
@@ -171,6 +175,10 @@ a:hover {
   font-size: 14px;
   color: indianred;
   padding: 5px;
+}
+
+.panel-title>.small, .panel-title>.small>a, .panel-title>a, .panel-title>small, .panel-title>small>a {
+  cursor: pointer;
 }
 
 /* Margin classes */

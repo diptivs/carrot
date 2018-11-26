@@ -1,10 +1,10 @@
-import React, { Component } from "react";
 import { API } from "aws-amplify";
-import { PageHeader, DropdownButton, MenuItem } from "react-bootstrap";
-import "react-table/react-table.css";
 import Calendar from "./calendar";
+import "react-table/react-table.css";
+import React, { Component } from "react";
 import PomaAddTaskModal from "../../components/PomaAddTaskModal";
 import PomaAddProjectModal from "../../components/PomaAddProjectModal";
+import { PageHeader, DropdownButton, MenuItem } from "react-bootstrap";
 
 export default class PomaHome extends Component {
 
@@ -60,8 +60,8 @@ export default class PomaHome extends Component {
 					projectStatus: "New",
 					projectOwner: this.props.id,
 					projectContributors: projectContributorsIDs,
-					projectStartDate: startDate.format('X'),
-					projectEndDate: endDate.format('X'),
+					projectStartDate: startDate.format('X') * 1000,
+					projectEndDate: endDate.format('X')  * 1000,
 				}
 			});
 		}

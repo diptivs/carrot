@@ -5,6 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import classNames from "classnames";
 import "./tasks.css";
 import { TASK_STATUS } from "../../constants";
+import PomaAddProjectModal from "../../components/PomaAddProjectModal";
 
 const { DONE } = TASK_STATUS;
 
@@ -13,7 +14,9 @@ export default class Tasks extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			projects: []
+			projects: [],
+			showAddProjectModal: false,
+			addProjectModalData: {}
 		};
 	};
 
@@ -45,19 +48,47 @@ export default class Tasks extends Component {
 
 	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
+	handleClick = (projectData) => {
+		const { project } = projectData;
+		this.setState({ showAddProjectModal: true, addProjectModalData: project })
+	};
+
+	handleProjectModalHide = (data, isSubmit) => {
+		this.setState({ showAddProjectModal: false });
+		if (!isSubmit) {
+			return;
+		} else {
+			const { projectId, projectStatus, projectName, projectDescription, projectContributorsIDs, startDate, endDate } = data;
+			API.put("api", `/api/project/${projectId}`, {
+				body: {
+					projectName,
+					projectDescription,
+					projectStatus,
+					projectOwner: this.props.id,
+					projectContributors: projectContributorsIDs,
+					projectStartDate: startDate.format('X') * 1000,
+					projectEndDate: endDate.format('X')  * 1000,
+				}
+			});
+		}
+	}
+
 	renderProjectPanel = (project) => {
 		const { tasks, project: { projectName } } = project;
 		const taskCount = this.countTasks([project]);
-		console.log(taskCount);
 		return (
-		<Panel id="collapsible-panel-example-2" defaultExpanded>
+		<Panel key={projectName} id="collapsible-panel-example-2" defaultExpanded>
 			<Panel.Heading>
-			  	<Panel.Title toggle className="text-center">
-					<Badge className="pull-left mr-2">{taskCount.toComplete} left</Badge>
-					<Badge className="pull-left">{taskCount.completed} completed</Badge>
-					<span>{ projectName }</span>
-					<span className="pull-right"><i className="far fa-eye"/></span>
-					<span className="pull-right"><i className="far fa-eye-slash"/></span>
+			  	<Panel.Title className="text-center">
+					<Panel.Toggle componentClass="a">
+						<Badge className="pull-left mr-2">{taskCount.toComplete} left</Badge>
+						<Badge className="pull-left">{taskCount.completed} completed</Badge>
+					</Panel.Toggle>
+					<span className="pointer" onClick={() => this.handleClick(project)}>{ projectName }</span>
+					<Panel.Toggle componentClass="a">
+						<span className="pull-right"><i className="far fa-eye"/></span>
+						<span className="pull-right"><i className="far fa-eye-slash"/></span>					
+					</Panel.Toggle>
 			  	</Panel.Title>
 			</Panel.Heading>
 			<Panel.Collapse>
@@ -65,7 +96,7 @@ export default class Tasks extends Component {
 					{
 						tasks.map((task) => {
 							const { taskId, taskName, taskStatus, taskDescription } = task;
-							return(<div className="inline">
+							return(<div key={taskName} className="inline">
 								<LinkContainer to={`/tasks/${taskId}`}>
 									<div className={classNames("task-card animated fadeIn", taskStatus === DONE ? "done" : null)}>
 										<div className="task-card-title">{taskName}</div>
@@ -99,7 +130,9 @@ export default class Tasks extends Component {
 		return { toComplete, completed }
 	}
 
+	
 	render() {
+		const { showAddProjectModal, addProjectModalData } = this.state;
 		const { projects } = this.state;
 		const taskCount = this.countTasks(projects);
 		return (
@@ -112,6 +145,9 @@ export default class Tasks extends Component {
 					Object.keys(projects).map((project) => {
 						return this.renderProjectPanel(projects[project]);
 					})
+				}
+				{
+					showAddProjectModal ? <PomaAddProjectModal show={showAddProjectModal} handleClose={this.handleProjectModalHide} data={addProjectModalData} edit/> : null
 				}
 			</div>
 		);
