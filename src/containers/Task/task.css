@@ -19,7 +19,7 @@
     margin: 10px;
     background-color: #F4F5F7;
     color: #5c6e7e;
-    padding: 10px;
+    padding: 20px 40px;
     border-radius: 5px;
     -o-transition:.5s;
     -ms-transition:.5s;
@@ -35,6 +35,18 @@
 }
 .task-card-big span {
     display: block;
+}
+.task-card-title-big {
+    font-weight: bolder;
+    color: #FA6348;
+}
+.task-card-text-label {
+    font-weight: bolder;
+    margin: 15px 0px;
+    color: #6c757d
+}
+.task-card-text-block {
+    margin: 10px 0px;
 }
 .done-big {
     border: 3px solid #32CD32;

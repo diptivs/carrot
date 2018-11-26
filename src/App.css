@@ -206,6 +206,9 @@ a:hover {
 .mt-4 {
   margin-top: 1rem!important;
 }
+.mt-4x {
+  margin-top: 2rem!important;
+}
 .m-1 {
   margin: .25rem!important;
 }
@@ -241,4 +244,22 @@ a:hover {
 }
 .mr-4 {
   margin-right: 1rem!important;
+}
+.w-25 {
+  width: 25%;
+}
+.w-40 {
+  width: 40%;
+}
+.w-50 {
+  width: 50%;
+}
+.w-60 {
+  width: 60%;
+}
+.w-75 {
+  width: 75%;
+}
+.w-100 {
+  width: 100%;
 }

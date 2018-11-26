@@ -6,8 +6,9 @@ const ADD_PROJECT_MODAL = {
     EDIT_TITLE: "Edit this Project",
     ADD_TITLE: "Add a Project"
 }
-
+const NONE_VALUE = "None"
 module.exports = {
     TASK_STATUS,
-    ADD_PROJECT_MODAL
+    ADD_PROJECT_MODAL,
+    NONE_VALUE
 }
