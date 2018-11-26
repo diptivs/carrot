@@ -46,7 +46,7 @@ export default class PomaAddProjectModal extends Component {
         const { target: { value }, charCode } = e;
         if (charCode === 13) {
             e.preventDefault();
-            const subId = await this.getUserInfo(value);
+            const subId = await this.getUserInfoFromEmail(value);
             const { userId } = subId.Items.length ? subId.Items[0] : { userId: null };
             if (userId) {
                 this.setState((prevState) => {
@@ -64,7 +64,7 @@ export default class PomaAddProjectModal extends Component {
         }
     }
 
-    getUserInfo = (email) => {
+    getUserInfoFromEmail = (email) => {
         return API.get("api", "/api/user", {
             queryStringParameters: {
                 emailId: email,
