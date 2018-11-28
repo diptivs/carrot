@@ -81,14 +81,32 @@ i {
   background-color: #F4F5F7;
   border: none;
 }
-
 .btn-add:hover {
   background-color: #FA6449;
   color: white;
 }
 
+button{
+  outline: 0px;
+}
+
+.btn-toolbar,
+.btn-toolbar:focus {
+  padding: 10px;
+  background-color: #FDBF49;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  outline: 0px;
+}
+.btn-toolbar:hover {
+  background-color: #e3ab41;
+  color: white;
+}
 /* Poma btn */
-.btn-poma {
+.btn-poma 
+.btn-poma:active {
+  outline: 0px;
   background-color: #FA6449;
   color: white;
   border: none;
@@ -106,7 +124,9 @@ i {
 }
 
 /* Poma btn cancel */
-.btn-poma-cancel {
+.btn-poma-cancel
+.btn-poma-cancel:active {
+  outline: 0px;
   background-color: #FDBF49;
   color: white;
   border: none;
@@ -206,8 +226,8 @@ a:hover {
 .mt-4 {
   margin-top: 1rem!important;
 }
-.mt-4x {
-  margin-top: 2rem!important;
+.mt-3x {
+  margin-top: 3rem!important;
 }
 .m-1 {
   margin: .25rem!important;
@@ -233,6 +253,9 @@ a:hover {
 .ml-4 {
   margin-left: 1rem!important;
 }
+.mr-0 {
+  margin-right: .0rem!important;
+}
 .mr-1 {
   margin-right: .25rem!important;
 }
@@ -244,6 +267,9 @@ a:hover {
 }
 .mr-4 {
   margin-right: 1rem!important;
+}
+.mt-4x {
+  margin-top: 4rem!important;
 }
 .w-25 {
   width: 25%;

@@ -12,6 +12,23 @@ export default class PomaAddTaskModal extends Component {
 		};
     }
 
+    async componentDidMount() {
+        if (!this.props.data) {
+            return;
+        }
+        const { userId, taskId, taskName, taskStatus, taskPomodoroCount, taskDescription, projectId, projectName } = this.props.data;
+        this.setState({
+            userId,
+            taskId,
+            taskName,
+            taskPomodoroCount,
+            taskDescription,
+            projectId,
+            projectName,
+            taskStatus
+        });
+    }
+
     componentWillReceiveProps = async () => {
         if (this.props.id) {
             const projects = await this.getUserProjects(this.props.id);
@@ -85,18 +102,26 @@ export default class PomaAddTaskModal extends Component {
     }
 
     renderStep2() {
+        const { taskName } = this.state;
         return (
             <FormGroup controlId="formControlsSelect">
                 <ControlLabel>Project</ControlLabel>
-                <FormControl componentClass="select" placeholder="select" onChange={this.handleSelect}>
-                    <option value="select">Select the project this task belongs to</option>
-                {
-                    this.state.projects.map((project) => {
-                        const { projectId, projectName } = project;
-                        return <option value={projectId}>{projectName}</option>
-                    })
+                {!this.props.edit &&
+                    <FormControl componentClass="select" placeholder="select" onChange={this.handleSelect}>
+                        <option value="select">Select the project this task belongs to</option>
+                    {
+                        this.state.projects.map((project) => {
+                            const { projectId, projectName } = project;
+                            return <option value={projectId}>{projectName}</option>
+                        })
+                    }
+                    </FormControl>
                 }
-                </FormControl>
+                {this.props.edit &&
+                    <FormControl componentClass="select" placeholder="select" disabled>
+                        <option value="select" >{taskName}</option>
+                    </FormControl>
+                }
             </FormGroup>
         )
     }

@@ -1,13 +1,19 @@
 import { API } from "aws-amplify";
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
+import classNames from "classnames";
 import "./task.css";
-import { NONE_VALUE } from "../../constants";
+import { TASK_STATUS, NONE_VALUE } from "../../constants";
+import PomaAddTaskModal from "../../components/PomaAddTaskModal";
+
+const { DONE } = TASK_STATUS;
 
 export default class Task extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			addTaskModalData: {},
+			showAddTaskModal: false,
 			taskName: null,
 			taskPomodoroCount: null,
 			taskPomodoroStartTime: null,
@@ -19,11 +25,9 @@ export default class Task extends Component {
 			lastName: null,
 			emailId: null,
 			taskId: null,
-			userId: null
+			userId: null,
+			deleting: false
 		};
-	}
-	goBack = () => {
-		this.props.history.push("/tasks");
 	}
 
 	async componentDidMount() {
@@ -46,6 +50,7 @@ export default class Task extends Component {
 			projectName,
 			taskDescription,
 			userId,
+			projectId,
 			firstName,
 			lastName,
 			emailId,
@@ -59,8 +64,63 @@ export default class Task extends Component {
 
 	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
+	goBack = () => {
+		this.props.history.push("/tasks");
+	}
+
+	editTask = () => {
+		this.setState({ showAddTaskModal: true, addTaskModalData: this.state })
+	}
+
+	deleteTask = (confirmed) => {
+		const { taskId } = this.state;
+		this.setState((prevState) => {
+            return { deleting: !prevState.deleting };
+        })
+		if (confirmed) {
+			// Delete
+			API.del("api", `/api/task/${taskId}`).then(() => {
+				this.props.history.push("/tasks");
+			});
+		}
+	}
+
+	handleTaskModalHide = (data, isSubmit) => {
+		this.setState({ showAddTaskModal: false });
+		if (!isSubmit) {
+			return;
+		} else {
+			const { taskId, projectId, taskName, taskDescription, taskStatus, taskPomodoroCount, userId } = data;
+			API.put("api", `/api/task/${taskId}`, {
+				body: {
+					projectId,
+					taskName,
+					taskDescription,
+					taskStatus,
+					taskPomodoroCount,
+					userId,
+					taskPomodoroEndTime: "13-12-2222"
+				}
+			});
+		}
+	}
+
+	renderDeleteAlert = () => {
+		return(<Alert bsStyle="danger" onDismiss={this.handleDismiss}>
+			<h4>Deleting this task!</h4>
+			<p>You are about to delete a task. This action is irreversible and should be done with caution.</p>
+			<div className="pull-right">
+				<Button className="mr-3" bsStyle="danger" onClick={() => this.deleteTask(true)}>Delete this task</Button>
+				<Button onClick={() => this.deleteTask(false)}>Cancel</Button>
+			</div>
+		</Alert>)
+	}
+
 	render() {
 		const {
+			deleting,
+			showAddTaskModal,
+			addTaskModalData,
 			taskName,
 			taskDescription,
 			taskPomodoroCount,
@@ -76,12 +136,14 @@ export default class Task extends Component {
 		return (
 			<div className="task-container">
 				<div className="task-menu-bar animated fadeIn">
-					<Button onClick={this.goBack} className="btn-add" bsStyle="btn-add pull-right transition">Back</Button>
+					<Button onClick={this.goBack} className="btn-add ml-3" bsStyle="btn-add pull-right transition">Back</Button>
+					<Button onClick={this.editTask} className="ml-3 btn-toolbar" bsStyle="btn-toolbar pull-right transition"><i className="mr-0 fas fa-pencil-alt"/></Button>
+					<Button onClick={() => this.deleteTask(false)} className="btn-toolbar" bsStyle="btn-toolbar pull-right transition"><i className="mr-0 fas fa-trash-alt"/></Button>
 				</div>
-				<div className="task-card-big done-big shadow animated fadeIn">
+				{ deleting ? this.renderDeleteAlert() : null }
+				<div className={classNames("task-card-big shadow animated fadeIn", taskStatus === DONE ? "done-big" : null)}>
 					<span className="pull-left">{taskId}</span>
-					<span className="pull-right">{taskPomodoroCount} pomodoro's</span>
-					<hr className="mb-3"/>
+					<hr className="mb-3 mt-3x"/>
 					<div className="text-left pull-left w-60">
 						<h3 className="task-card-title-big">{taskName}</h3>
 						<span className="task-card-text-block">{taskDescription}</span>
@@ -97,8 +159,13 @@ export default class Task extends Component {
 						<h5 className="task-card-text-block"><i className="fas fa-user fa-fw"/>{`${firstName} ${lastName} - ${emailId}`}</h5>
 						<span className="task-card-text-label">Project:</span>
 						<h5 className="task-card-text-block">{projectName}</h5>
+						<span className="task-card-text-label">Pomodoro count:</span>
+						<h5 className="task-card-text-block">{taskPomodoroCount}</h5>
 					</div>
 				</div>
+				{
+					showAddTaskModal ? 	<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide} id={this.props.id} data={addTaskModalData} edit/> : null
+				}
 			</div>
 		);
 	}
