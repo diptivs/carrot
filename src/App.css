@@ -86,17 +86,14 @@ i {
   color: white;
 }
 
-button{
-  outline: 0px;
-}
-
-.btn-toolbar,
-.btn-toolbar:focus {
+.btn-toolbar {
   padding: 10px;
   background-color: #FDBF49;
   color: white;
   border: none;
   border-radius: 5px;
+}
+.btn-toolbar:focus {
   outline: 0px;
 }
 .btn-toolbar:hover {
@@ -104,12 +101,13 @@ button{
   color: white;
 }
 /* Poma btn */
-.btn-poma 
-.btn-poma:active {
-  outline: 0px;
+.btn-poma {
   background-color: #FA6449;
   color: white;
   border: none;
+}
+.btn-poma:active {
+  outline: 0px;
 }
 .btn-poma:hover {
   background-color: #FA6449;
@@ -124,12 +122,13 @@ button{
 }
 
 /* Poma btn cancel */
-.btn-poma-cancel
-.btn-poma-cancel:active {
-  outline: 0px;
+.btn-poma-cancel {
   background-color: #FDBF49;
   color: white;
   border: none;
+}
+.btn-poma-cancel:active {
+  outline: 0px;
 }
 .btn-poma-cancel:hover, .clasbtn-poma-cancel:active, .btn-poma-cancel:focus {
   background-color: #FDBF49;

@@ -93,13 +93,14 @@ export default class Task extends Component {
 			const { taskId, projectId, taskName, taskDescription, taskStatus, taskPomodoroCount, userId } = data;
 			API.put("api", `/api/task/${taskId}`, {
 				body: {
+					taskId,
 					projectId,
 					taskName,
 					taskDescription,
 					taskStatus,
 					taskPomodoroCount,
 					userId,
-					taskPomodoroEndTime: "13-12-2222"
+					taskPriority: 1
 				}
 			});
 		}
