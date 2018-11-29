@@ -110,6 +110,9 @@ class App extends Component {
                     <LinkContainer to="/tasks" className="nav-btn">
                       <NavItem>Tasks</NavItem>
                     </LinkContainer>
+                    <LinkContainer to="/manage" className="nav-btn">
+                      <NavItem>Manage</NavItem>
+                    </LinkContainer>
                     <LinkContainer to="/configure" className="nav-btn">
                       <NavItem>Configure</NavItem>
                     </LinkContainer>

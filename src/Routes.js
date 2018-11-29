@@ -11,6 +11,7 @@ import Notes from "./containers/Notes";
 import Tasks from "./containers/Tasks/index";
 import Task from "./containers/Task/index";
 import Configure from "./containers/Configure/index";
+import Manage from "./containers/Manage/index";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
@@ -23,6 +24,7 @@ export default ({ childProps }) =>
 		<AuthenticatedRoute path="/tasks" exact component={Tasks} props={childProps} />
 		<AuthenticatedRoute path="/tasks/:id" exact component={Task} props={childProps} />
 		<AuthenticatedRoute path="/configure" exact component={Configure} props={childProps} />
+		<AuthenticatedRoute path="/manage" exact component={Manage} props={childProps} />
 		<AuthenticatedRoute path="/admin" exact component={Admin} props={childProps} />
 		<AuthenticatedRoute path="/notes/new" exact component={NewNote} props={childProps} />
 		<AuthenticatedRoute path="/notes/:id" exact component={Notes} props={childProps} />

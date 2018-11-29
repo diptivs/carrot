@@ -3,17 +3,20 @@ import React, { Component } from "react";
 import { Panel, Alert, Badge } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import classNames from "classnames";
-import "./tasks.css";
+import "./manage.css";
 import { TASK_STATUS } from "../../constants";
+import PomaAddProjectModal from "../../components/PomaAddProjectModal";
 
 const { DONE } = TASK_STATUS;
 
-export default class Tasks extends Component {
+export default class Manage extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			projects: [],
+			showAddProjectModal: false,
+			addProjectModalData: {}
 		};
 	};
 
@@ -21,31 +24,70 @@ export default class Tasks extends Component {
         if (this.props.id) {
 			// Fetch tasks this user is working on
 			const projectTaskMap = {};
-			const tasks = await this.getUserTasks(this.props.id);
-			if (tasks.taskId) {	
-				tasks.taskId.values.forEach(async (task) => {
-					// Get task info
-					const taskInfo = await this.getTaskInfo(task);
-					const { projectId } = taskInfo;
-					// Get project info for projectId of this task
-					const projectInfo = await this.getProjectInfo(projectId);
-					// Create and update map obj in state
-					const thisTasks = this.state.projects[projectId] ? this.state.projects[projectId].tasks.concat(taskInfo) : [taskInfo];
-					projectTaskMap[projectId] = {
-						tasks: thisTasks,
-						project: projectInfo,
-					}
-					this.setState({ projects: projectTaskMap });
-				});
-			} 
+			const projects = await this.getUserProjectsAndTasks();
+			console.log(projects);
+			projects.Items.forEach((project) => {
+				const {
+					tasks,
+					projectContributors,
+					projectDescription,
+					projectEndDate,
+					projectId,
+					projectName,
+					projectOwner,
+					projectStartDate,
+					projectStatus
+				} = project;
+				projectTaskMap[projectId] = {
+					tasks,
+					project: {
+						projectContributors,
+						projectDescription,
+						projectEndDate,
+						projectId,
+						projectName,
+						projectOwner,
+						projectStartDate,
+						projectStatus
+					},
+				}
+				this.setState({ projects: projectTaskMap });
+			});
         }
     }
+
+	getUserProjectsAndTasks = () => API.get("api", "/api/project/detail");
 
 	getUserTasks = (userId) => API.get("api", `/api/user/${userId}`);
 
 	getTaskInfo = (taskId) => API.get("api", `/api/task/${taskId}`);
 
 	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
+
+	handleClick = (projectData) => {
+		const { project } = projectData;
+		this.setState({ showAddProjectModal: true, addProjectModalData: project })
+	};
+
+	handleProjectModalHide = (data, isSubmit) => {
+		this.setState({ showAddProjectModal: false });
+		if (!isSubmit) {
+			return;
+		} else {
+			const { projectId, projectStatus, projectName, projectDescription, projectContributorsIDs, startDate, endDate } = data;
+			API.put("api", `/api/project/${projectId}`, {
+				body: {
+					projectName,
+					projectDescription,
+					projectStatus,
+					projectOwner: this.props.id,
+					projectContributors: projectContributorsIDs,
+					projectStartDate: startDate.format('X') * 1000,
+					projectEndDate: endDate.format('X')  * 1000,
+				}
+			});
+		}
+	}
 
 	renderProjectPanel = (project) => {
 		const { tasks, project: { projectName } } = project;
@@ -58,7 +100,7 @@ export default class Tasks extends Component {
 						<Badge className="pull-left mr-2">{taskCount.toComplete} left</Badge>
 						<Badge className="pull-left">{taskCount.completed} completed</Badge>
 					</Panel.Toggle>
-					<span className="pointer">{ projectName }</span>
+					<span className="pointer" onClick={() => this.handleClick(project)}><i class="fas fa-pencil-alt"/>{ projectName }</span>
 					<Panel.Toggle componentClass="a">
 						<span className="pull-right"><i className="far fa-eye"/></span>
 						<span className="pull-right"><i className="far fa-eye-slash"/></span>					
@@ -106,19 +148,14 @@ export default class Tasks extends Component {
 
 	
 	render() {
+		const { showAddProjectModal, addProjectModalData } = this.state;
 		const { projects } = this.state;
-		const taskCount = this.countTasks(projects);
-		let alert = (
-			<Alert className="poma-alert text-center">
-				<div><strong>{taskCount.toComplete} </strong>tasks left to complete</div>
-				<div><strong>{taskCount.completed} </strong>tasks completed</div>
-			</Alert>
-		)
+		let alert = null;
 		if (!projects.length) {
 			alert = (
 				<Alert className="info text-center">
-					<div><strong>You currently do not have tasks under your account!</strong></div>
-					<div>Head back to the homepage and start creating some tasks!</div>
+					<div><strong>You are currently not managing any projects!</strong></div>
+					<div>Head back to the homepage and start creating some!</div>
 				</Alert>
 			)
 		}
@@ -129,6 +166,9 @@ export default class Tasks extends Component {
 					Object.keys(projects).map((project) => {
 						return this.renderProjectPanel(projects[project]);
 					})
+				}
+				{
+					showAddProjectModal ? <PomaAddProjectModal show={showAddProjectModal} handleClose={this.handleProjectModalHide} data={addProjectModalData} edit/> : null
 				}
 			</div>
 		);
