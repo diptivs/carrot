@@ -114,7 +114,7 @@ export default class Tasks extends Component {
 				<div><strong>{taskCount.completed} </strong>tasks completed</div>
 			</Alert>
 		)
-		if (!projects.length) {
+		if (!Object.keys(projects).length) {
 			alert = (
 				<Alert className="info text-center">
 					<div><strong>You currently do not have tasks under your account!</strong></div>

@@ -84,6 +84,7 @@ class App extends Component {
     await Auth.signOut();
     this.userHasAuthenticated(false);
     this.props.history.push("/login");
+    window.location.reload();
   }
 
   render() {

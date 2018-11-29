@@ -151,7 +151,7 @@ export default class Manage extends Component {
 		const { showAddProjectModal, addProjectModalData } = this.state;
 		const { projects } = this.state;
 		let alert = null;
-		if (!projects.length) {
+		if (!Object.keys(projects).length) {
 			alert = (
 				<Alert className="info text-center">
 					<div><strong>You are currently not managing any projects!</strong></div>
