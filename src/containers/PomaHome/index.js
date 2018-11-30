@@ -33,7 +33,7 @@ export default class PomaHome extends Component {
 		if (!isSubmit) {
 			return;
 		} else {
-			const { projectId, taskName, taskDescription, taskPomodoroCount } = data;
+			const { userId, projectId, taskName, taskDescription, taskPomodoroCount } = data;
 			API.post("api", "/api/task", {
 				body: {
 					projectId,
@@ -41,7 +41,7 @@ export default class PomaHome extends Component {
 					taskDescription,
 					taskStatus: "New",
 					taskPomodoroCount,
-					userId: this.props.id,
+					userId,
 				}
 			});
 		}

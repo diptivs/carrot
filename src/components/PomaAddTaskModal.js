@@ -1,4 +1,5 @@
 import { API } from "aws-amplify";
+import _ from "lodash";
 import React, { Component } from "react";
 import { Modal, Button, Badge, FormControl, FormGroup, ControlLabel } from "react-bootstrap";
 
@@ -9,6 +10,7 @@ export default class PomaAddTaskModal extends Component {
 		this.state = {
             step: 0,
             projects: [],
+            usersArray: []
 		};
     }
 
@@ -45,6 +47,8 @@ export default class PomaAddTaskModal extends Component {
         });
     };
 
+    getUserInfo = (userId) => API.get("api", `/api/user/${userId}`);
+
     next = () => {
         this.setState((prevState) => {
             return { step: prevState.step + 1 };
@@ -62,11 +66,27 @@ export default class PomaAddTaskModal extends Component {
         this.setState({ [id]: value });
     }
 
-    handleSelect = (e) => {
+    handleProjectSelect = (e) => {
+        const { projects } = this.state;
         const { target: { value } } = e;
         const index = e.nativeEvent.target.selectedIndex;
         const projectName = e.nativeEvent.target[index].text;
-        this.setState({ projectId: value, projectName });
+        // get contributors for this project
+        const { projectContributors } = _.find(projects, ['projectId', value]) || { projectContributors: { values: [] } };
+        const { values } = projectContributors;
+        const usersArray = [];
+        values.forEach(async (user) => {
+            const userInfo = await this.getUserInfo(user);
+            usersArray.push(userInfo);
+        });
+        this.setState({ projectId: value, projectName, usersArray });
+    }
+
+    handleAssigneeSelect = (e) => {
+        const { target: { value } } = e;
+        const index = e.nativeEvent.target.selectedIndex;
+        const userName = e.nativeEvent.target[index].text;
+        this.setState({ userId: value, userName });
     }
 
     renderStep1() {
@@ -95,19 +115,18 @@ export default class PomaAddTaskModal extends Component {
                     placeholder="Description"
                     value={this.state.taskDescription}
                     onChange={this.handleChange}
-
                 />
             </form>
         )
     }
 
     renderStep2() {
-        const { taskName } = this.state;
+        const { projectId: projectIdProp, taskName } = this.state;
         return (
             <FormGroup controlId="formControlsSelect">
                 <ControlLabel>Project</ControlLabel>
                 {!this.props.edit &&
-                    <FormControl componentClass="select" placeholder="select" onChange={this.handleSelect}>
+                    <FormControl componentClass="select" placeholder="select" value={projectIdProp} onChange={this.handleProjectSelect}>
                         <option value="select">Select the project this task belongs to</option>
                     {
                         this.state.projects.map((project) => {
@@ -126,13 +145,32 @@ export default class PomaAddTaskModal extends Component {
         )
     }
 
-    renderStep3 = () => {
-        const { taskName, taskDescription, taskPomodoroCount, projectName } = this.state;
+    renderStep3() {
+        const { usersArray, userId: userIdProp } = this.state;
+        return (
+            <FormGroup controlId="userId">
+                <ControlLabel>Assignee</ControlLabel>
+                    <FormControl componentClass="select" value={userIdProp} placeholder="select" onChange={this.handleAssigneeSelect}>
+                        <option value="select" selected="selected">Select who is working on this task</option>
+                    {
+                        usersArray.map((user) => {
+                            const { userId, firstName, lastName } = user;
+                            return <option value={userId}>{firstName} {lastName}</option>
+                        })
+                    }
+                    </FormControl>
+            </FormGroup>
+        )
+    }
+
+    renderStep4 = () => {
+        const { taskName, userName, taskDescription, taskPomodoroCount, projectName } = this.state;
         return (
             <div>
                <div><strong>Task Name: </strong>{taskName}</div>
                <div><strong>Task Pomodoro Count: </strong>{taskPomodoroCount}</div>
                <div><strong>Task Description: </strong>{taskDescription}</div>
+               <div><strong>Assignee: </strong>{userName}</div>
                <div><strong>Project: </strong>{projectName}</div>
             </div>
         )
@@ -149,8 +187,12 @@ export default class PomaAddTaskModal extends Component {
                 content: this.renderStep2()
             },
             {
-                title: 'Review',
+                title: 'Assignee',
                 content: this.renderStep3()
+            },
+            {
+                title: 'Review',
+                content: this.renderStep4()
             },
         ]
         let stepBadges = [];
