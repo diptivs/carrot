@@ -33,6 +33,7 @@ export default class Login extends Component {
 		try {
 			await Auth.signIn(this.state.email, this.state.password);
 			this.props.userHasAuthenticated(true);
+			window.location.reload();
 		} catch (e) {
 			alert(e.message);
 			this.setState({ isLoading: false });
@@ -41,12 +42,14 @@ export default class Login extends Component {
 
 	handleFbLogin = () => {
   		this.props.userHasAuthenticated(true);
-  		this.props.userHasFedAuthenticated(true);
+		  this.props.userHasFedAuthenticated(true);
+		  window.location.reload();
 	};
 
 	handleGoogleLogin = () => {
   		this.props.userHasAuthenticated(true);
-  		this.props.userHasFedAuthenticated(true);
+		  this.props.userHasFedAuthenticated(true);
+		  window.location.reload();		  
 	};
 
 	render() {
