@@ -200,6 +200,47 @@ a:hover {
   cursor: pointer;
 }
 
+/* Lex Chat Bot Classes Override */
+#chatwrapper {
+  bottom: initial!important;
+  right: initial!important;
+  position: inherit!important;
+  margin: auto!important;
+  width: 50%!important;
+  padding: 10px!important;
+}
+#chat-header-rect {
+  padding: 4px!important;
+  border-radius: 5px!important;
+  width: 100%!important;
+  cursor: pointer;
+  font-size: 22px!important;
+  box-shadow: 0 12px 15px 0 rgba(0,0,0,.24), 0 17px 50px 0 rgba(0,0,0,.19)!important;
+}
+#chatcontainer {
+  box-shadow: 0 12px 15px 0 rgba(0,0,0,.24), 0 17px 50px 0 rgba(0,0,0,.19)!important;
+  max-height: 1000px;
+  width: 100%!important;
+}
+#conversation {
+  width: 100%!important;
+}
+#chatform input {
+  padding: 10px!important;
+  outline: none;
+  font-size: 18px!important;
+  width: 100%!important;
+}
+.lexError {
+  background-color: #FF6347!important;
+}
+.lexResponse {
+  background-color: #CCE4FE!important; 
+}
+.chevron.bottom {
+  display: none!important;
+}
+
 /* Margin classes */
 .mb-1 {
   margin-bottom: .25rem!important;
