@@ -27,7 +27,7 @@ export default class CalendarEventModal extends Component {
                         <div>Description goes here</div>
                         <div>Pomodoro count</div>
                     </div>
-                    <div className="w-40 pull-right v-center">
+                    <div className="timer-container w-40 pull-right v-center">
                         <TimerMachine
                             timeStart={10 * 1000}
                             timeEnd={20 * 1000}

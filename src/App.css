@@ -255,6 +255,11 @@ a:hover {
   transform: translateY(-50%);
 }
 
+.timer-container {
+  font-size: 25px;
+  height: 55px;
+}
+
 /* Margin classes */
 .mb-1 {
   margin-bottom: .25rem!important;
