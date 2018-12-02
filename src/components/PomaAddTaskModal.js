@@ -19,6 +19,21 @@ export default class PomaAddTaskModal extends Component {
             return;
         }
         const { userId, taskId, taskName, taskStatus, taskPomodoroCount, taskDescription, projectId, projectName } = this.props.data;
+        // get contributors for this project
+        const { projectOwner, projectContributors } = await this.getProjectInfo(projectId);
+        const { values } = projectContributors;
+        const usersArray = [];
+        let userName = null;
+        values.forEach(async (user) => {
+            const userInfo = await this.getUserInfo(user);
+            usersArray.push(userInfo);
+            const { userId: userIdInfo, firstName, lastName } = userInfo
+            if ( userIdInfo === userId) {
+                userName = `${firstName} ${lastName}`;
+            }
+        });
+        const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
+        if (ownerInfo) { usersArray.push(ownerInfo) }
         this.setState({
             userId,
             taskId,
@@ -27,17 +42,25 @@ export default class PomaAddTaskModal extends Component {
             taskDescription,
             projectId,
             projectName,
-            taskStatus
+            taskStatus,
+            usersArray,
+            userName
         });
     }
 
     componentWillReceiveProps = async () => {
         if (this.props.id) {
-            const projects = await this.getUserProjects(this.props.id);
-            this.setState({ projects: projects.Items });
+            const projects = await this.getUserProjectsAndTasks();
+            const projectsList = projects[0];
+            projectsList.concat(projects[1]);
+            this.setState({ projects: projectsList });
         }
         this.setState({ step: 0 });
     }
+
+    getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
+
+	getUserProjectsAndTasks = () => API.get("api", "/api/project/detail");
 
     getUserProjects = (userId) => {
         return API.get("api", "/api/project", {
@@ -66,19 +89,21 @@ export default class PomaAddTaskModal extends Component {
         this.setState({ [id]: value });
     }
 
-    handleProjectSelect = (e) => {
+    handleProjectSelect = async (e) => {
         const { projects } = this.state;
         const { target: { value } } = e;
         const index = e.nativeEvent.target.selectedIndex;
         const projectName = e.nativeEvent.target[index].text;
         // get contributors for this project
-        const { projectContributors } = _.find(projects, ['projectId', value]) || { projectContributors: { values: [] } };
+        const { projectOwner, projectContributors } = _.find(projects, ['projectId', value]) || { projectContributors: { values: [] }, projectOwner: null };
         const { values } = projectContributors;
         const usersArray = [];
         values.forEach(async (user) => {
             const userInfo = await this.getUserInfo(user);
             usersArray.push(userInfo);
         });
+        const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
+        if (ownerInfo) { usersArray.push(ownerInfo) }
         this.setState({ projectId: value, projectName, usersArray });
     }
 
