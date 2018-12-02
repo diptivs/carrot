@@ -27,11 +27,15 @@ div.inline { float:left; }
     cursor: pointer;
     background-color: #caad93;
 }
-.task-card span {
-    display: block;
-}
 .task-card-title{
     font-weight: bolder;
+}
+.task-card span {
+    display: block;
+    height: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .done {
     background-color: #32CD32;

@@ -39,7 +39,7 @@ export default class CalendarEventModal extends Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" disabled={started}>Close</Button>
+                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" disabled={started} onClick={() => this.props.handleClose(null, false)}>Close</Button>
                     <Button bsStyle="poma" className="btn-poma" disabled={started}>View</Button>
                     <Button onClick={this.startTimer} disabled={started}>Start</Button>
                 </Modal.Footer>

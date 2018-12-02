@@ -26,7 +26,8 @@ export default class Task extends Component {
 			emailId: null,
 			taskId: null,
 			userId: null,
-			deleting: false
+			deleting: false,
+			projectOwner: null
 		};
 	}
 
@@ -40,7 +41,7 @@ export default class Task extends Component {
 		const { firstName, lastName, emailId } = userInfo;
 		// Fetch task project info
 		const projectInfo = await this.getProjectInfo(projectId)
-		const { projectName } = projectInfo;
+		const { projectName, projectOwner } = projectInfo;
 		this.setState({
 			taskName,
 			taskPomodoroCount,
@@ -51,6 +52,7 @@ export default class Task extends Component {
 			taskDescription,
 			userId,
 			projectId,
+			projectOwner,
 			firstName,
 			lastName,
 			emailId,
@@ -132,13 +134,19 @@ export default class Task extends Component {
 			firstName,
 			lastName,
 			emailId,
-			taskId
+			taskId,
+			userId,
+			projectOwner
 		} = this.state;
+		console.log('projectOwner', projectOwner)
+		console.log('userId', userId);
+		const canEdit = (userId === this.props.id) || (this.props.id === projectOwner);
+		const editButton = canEdit ? <Button onClick={this.editTask} className="ml-3 btn-toolbar" bsStyle="btn-toolbar pull-right transition"><i className="mr-0 fas fa-pencil-alt"/></Button> : null;
 		return (
 			<div className="task-container">
 				<div className="task-menu-bar animated fadeIn">
 					<Button onClick={this.goBack} className="btn-add ml-3" bsStyle="btn-add pull-right transition">Back</Button>
-					<Button onClick={this.editTask} className="ml-3 btn-toolbar" bsStyle="btn-toolbar pull-right transition"><i className="mr-0 fas fa-pencil-alt"/></Button>
+					{ editButton }
 					<Button onClick={() => this.deleteTask(false)} className="btn-toolbar" bsStyle="btn-toolbar pull-right transition"><i className="mr-0 fas fa-trash-alt"/></Button>
 				</div>
 				{ deleting ? this.renderDeleteAlert() : null }
