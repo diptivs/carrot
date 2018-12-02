@@ -240,6 +240,20 @@ a:hover {
 .chevron.bottom {
   display: none!important;
 }
+.event-modal .modal-body {
+  background-color: #FF6449;
+  color: white;
+  height: 100px;
+  text-align: center;
+}
+
+.v-center {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
 
 /* Margin classes */
 .mb-1 {

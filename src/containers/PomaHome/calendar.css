@@ -18,3 +18,6 @@
 .rbc-event.rbc-selected {
     background-color: #ffbf47;
 }
+.rbc-event {
+    z-index: 999 !important;
+}

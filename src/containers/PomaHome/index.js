@@ -4,7 +4,7 @@ import "react-table/react-table.css";
 import React, { Component } from "react";
 import PomaAddTaskModal from "../../components/PomaAddTaskModal";
 import PomaAddProjectModal from "../../components/PomaAddProjectModal";
-import { PageHeader, DropdownButton, MenuItem } from "react-bootstrap";
+import { Button, PageHeader, DropdownButton, MenuItem } from "react-bootstrap";
 
 export default class PomaHome extends Component {
 
