@@ -23,36 +23,10 @@ export default class Manage extends Component {
 	async componentDidMount() {
         if (this.props.id) {
 			// Fetch tasks this user is working on
-			const projectTaskMap = {};
-			const projects = await this.getUserProjectsAndTasks();
-			console.log(projects);
-			projects.Items.forEach((project) => {
-				const {
-					tasks,
-					projectContributors,
-					projectDescription,
-					projectEndDate,
-					projectId,
-					projectName,
-					projectOwner,
-					projectStartDate,
-					projectStatus
-				} = project;
-				projectTaskMap[projectId] = {
-					tasks,
-					project: {
-						projectContributors,
-						projectDescription,
-						projectEndDate,
-						projectId,
-						projectName,
-						projectOwner,
-						projectStartDate,
-						projectStatus
-					},
-				}
-				this.setState({ projects: projectTaskMap });
-			});
+            const projects = await this.getUserProjectsAndTasks();
+            const projectsList = projects[0];
+            projectsList.concat(projects[1]);
+            this.setState({ projects: projectsList });
         }
     }
 
@@ -90,8 +64,8 @@ export default class Manage extends Component {
 	}
 
 	renderProjectPanel = (project) => {
-		const { tasks, project: { projectName } } = project;
-		const taskCount = this.countTasks([project]);
+		const { tasks, projectName } = project;
+		const taskCount = this.countTasks(tasks);
 		return (
 		<Panel key={projectName} id="collapsible-panel-example-2" defaultExpanded>
 			<Panel.Heading>
@@ -129,19 +103,16 @@ export default class Manage extends Component {
 		)
 	};
 
-	countTasks = (projects) => {
+	countTasks = (tasks) => {
 		let toComplete = 0;
 		let completed = 0;
-		Object.keys(projects).forEach((project) => {
-			const { tasks } = projects[project];
-			tasks.forEach((task) => {
-				const { taskStatus } = task;
-				if (taskStatus === DONE) {
-					completed = completed + 1;
-				} else {
-					toComplete = toComplete + 1;
-				}
-			})
+		tasks.forEach((task) => {
+			const { taskStatus } = task;
+			if (taskStatus === DONE) {
+				completed = completed + 1;
+			} else {
+				toComplete = toComplete + 1;
+			}
 		})
 		return { toComplete, completed }
 	}
@@ -163,8 +134,8 @@ export default class Manage extends Component {
 			<div className="tasks-container animated fadeIn">
 				{ alert }
 				{
-					Object.keys(projects).map((project) => {
-						return this.renderProjectPanel(projects[project]);
+					projects.map((project) => {
+						return this.renderProjectPanel(project);
 					})
 				}
 				{

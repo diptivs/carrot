@@ -18,43 +18,34 @@ export default class Tasks extends Component {
 	};
 
 	async componentDidMount() {
-		console.log(this.props.id);
         if (this.props.id) {
 			// Fetch tasks this user is working on
 			const projectTaskMap = {};
-			const projects = await this.getUserProjectsAndTasks();
-			console.log(projects);
-			projects.Items.forEach((project) => {
-				const {
-					tasks,
-					projectContributors,
-					projectDescription,
-					projectEndDate,
-					projectId,
-					projectName,
-					projectOwner,
-					projectStartDate,
-					projectStatus
-				} = project;
-				projectTaskMap[projectId] = {
-					tasks,
-					project: {
-						projectContributors,
-						projectDescription,
-						projectEndDate,
-						projectId,
-						projectName,
-						projectOwner,
-						projectStartDate,
-						projectStatus
-					},
-				}
-				this.setState({ projects: projectTaskMap });
-			});
-        }
+			const tasks = await this.getUserTasks(this.props.id);
+			if (tasks.taskId) {	
+				tasks.taskId.values.forEach(async (task) => {
+					// Get task info
+					const taskInfo = await this.getTaskInfo(task);
+					const { projectId } = taskInfo;
+					// Get project info for projectId of this task
+					const projectInfo = await this.getProjectInfo(projectId);
+					// Create and update map obj in state
+					const thisTasks = this.state.projects[projectId] ? this.state.projects[projectId].tasks.concat(taskInfo) : [taskInfo];
+					projectTaskMap[projectId] = {
+						tasks: thisTasks,
+						project: projectInfo,
+					}
+					this.setState({ projects: projectTaskMap });
+				});
+			}
+		}
     }
 
-	getUserProjectsAndTasks = () => API.get("api", "/api/project/detail");
+	getUserTasks = (userId) => API.get("api", `/api/user/${userId}`);
+	
+	getTaskInfo = (taskId) => API.get("api", `/api/task/${taskId}`);
+
+ 	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
 	renderProjectPanel = (project) => {
 		const { tasks, project: { projectName } } = project;
