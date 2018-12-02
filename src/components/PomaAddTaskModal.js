@@ -156,7 +156,7 @@ export default class PomaAddTaskModal extends Component {
                     {
                         this.state.projects.map((project) => {
                             const { projectId, projectName } = project;
-                            return <option value={projectId}>{projectName}</option>
+                            return <option key={projectId} value={projectId}>{projectName}</option>
                         })
                     }
                     </FormControl>
@@ -237,13 +237,13 @@ export default class PomaAddTaskModal extends Component {
                     <div className="modal-step-body">{ steps[this.state.step].content }</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
-                    <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
+                    <Button className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
+                    <Button className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
+                        <Button className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
                     }
                     {this.state.step === steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
+                        <Button className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
                     }
                 </Modal.Footer>
             </Modal>

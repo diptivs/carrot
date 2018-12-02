@@ -16,7 +16,8 @@ export default class Manage extends Component {
 		this.state = {
 			projects: [],
 			showAddProjectModal: false,
-			addProjectModalData: {}
+			addProjectModalData: {},
+			loading: true
 		};
 	};
 
@@ -26,7 +27,7 @@ export default class Manage extends Component {
             const projects = await this.getUserProjectsAndTasks();
             const projectsList = projects[0];
             projectsList.concat(projects[1]);
-            this.setState({ projects: projectsList });
+            this.setState({ projects: projectsList, loading: false });
         }
     }
 
@@ -39,8 +40,7 @@ export default class Manage extends Component {
 	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
 	handleClick = (projectData) => {
-		const { project } = projectData;
-		this.setState({ showAddProjectModal: true, addProjectModalData: project })
+		this.setState({ showAddProjectModal: true, addProjectModalData: projectData })
 	};
 
 	handleProjectModalHide = (data, isSubmit) => {
@@ -74,7 +74,7 @@ export default class Manage extends Component {
 						<Badge className="pull-left mr-2">{taskCount.toComplete} left</Badge>
 						<Badge className="pull-left">{taskCount.completed} completed</Badge>
 					</Panel.Toggle>
-					<span className="pointer" onClick={() => this.handleClick(project)}><i class="fas fa-pencil-alt"/>{ projectName }</span>
+					<span className="pointer" onClick={() => this.handleClick(project)}><i className="fas fa-pencil-alt"/>{ projectName }</span>
 					<Panel.Toggle componentClass="a">
 						<span className="pull-right"><i className="far fa-eye"/></span>
 						<span className="pull-right"><i className="far fa-eye-slash"/></span>					
@@ -119,7 +119,7 @@ export default class Manage extends Component {
 
 	
 	render() {
-		const { showAddProjectModal, addProjectModalData } = this.state;
+		const { showAddProjectModal, addProjectModalData, loading } = this.state;
 		const { projects } = this.state;
 		let alert = null;
 		if (!Object.keys(projects).length) {
@@ -128,6 +128,13 @@ export default class Manage extends Component {
 					<div><strong>You are currently not managing any projects!</strong></div>
 					<div>Head back to the homepage and start creating some!</div>
 				</Alert>
+			)
+		}
+		if (loading) {
+			alert = (
+				<div className="text-center mt-3x">
+					<i className="fas fa-spinner fa-spin fa-5x"/>
+				</div>
 			)
 		}
 		return (

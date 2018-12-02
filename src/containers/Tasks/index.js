@@ -14,6 +14,7 @@ export default class Tasks extends Component {
 		super(props);
 		this.state = {
 			projects: [],
+			loading: true
 		};
 	};
 
@@ -35,7 +36,7 @@ export default class Tasks extends Component {
 						tasks: thisTasks,
 						project: projectInfo,
 					}
-					this.setState({ projects: projectTaskMap });
+					this.setState({ projects: projectTaskMap, loading: false });
 				});
 			}
 		}
@@ -106,7 +107,7 @@ export default class Tasks extends Component {
 
 	
 	render() {
-		const { projects } = this.state;
+		const { projects, loading } = this.state;
 		const taskCount = this.countTasks(projects);
 		let alert = (
 			<Alert className="poma-alert text-center">
@@ -120,6 +121,13 @@ export default class Tasks extends Component {
 					<div><strong>You currently do not have tasks under your account!</strong></div>
 					<div>Head back to the homepage and start creating some tasks!</div>
 				</Alert>
+			)
+		}
+		if (loading) {
+			alert = (
+				<div className="text-center mt-3x">
+					<i className="fas fa-spinner fa-spin fa-5x"/>
+				</div>
 			)
 		}
 		return (

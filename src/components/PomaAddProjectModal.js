@@ -256,13 +256,13 @@ export default class PomaAddProjectModal extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <div className="pull-left error-text">{ this.state.error }</div>
-                    <Button bsStyle="poma-cancel" className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
-                    <Button bsStyle="poma" className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
+                    <Button className="btn-poma-cancel" onClick={() => this.props.handleClose(null, false)}>Close</Button>
+                    <Button className="btn-poma transition" onClick={this.back} disabled={this.state.step === 0}>Back</Button>
                     {this.state.step !== steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
+                        <Button className="btn-poma" onClick={this.next} disabled={this.state.step === steps.length-1}>Next</Button>
                     }
                     {this.state.step === steps.length-1 &&
-                        <Button bsStyle="poma" className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
+                        <Button className="btn-poma" onClick={() => this.props.handleClose(this.state, true)}>Submit</Button>
                     }
                 </Modal.Footer>
             </Modal>

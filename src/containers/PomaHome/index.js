@@ -73,16 +73,17 @@ export default class PomaHome extends Component {
 			<div className="notes">
 				<PageHeader>
 					Welcome {this.props.firstname} {this.props.lastname}
-						<DropdownButton
-							bsStyle="btn-add pull-right transition"
-							title={<span><i className="fa fa-plus fa-fw"></i>Create</span>}
-							noCaret
-							id="dropdown-no-caret"
-							className="btn-add"
-						>
-							<MenuItem eventKey="1" onClick={this.createTask}>Task</MenuItem>
-							<MenuItem eventKey="2" onClick={this.createProgram}>Project</MenuItem>
-						</DropdownButton>
+						<div className="pull-right">
+							<DropdownButton
+								title={<span><i className="fa fa-plus fa-fw"></i>Create</span>}
+								noCaret
+								id="dropdown-no-caret"
+								className="btn-add transition"
+							>
+								<MenuItem eventKey="1" onClick={this.createTask}>Task</MenuItem>
+								<MenuItem eventKey="2" onClick={this.createProgram}>Project</MenuItem>
+							</DropdownButton>
+						</div>
 				</PageHeader>
                 <Calendar/>
 				<PomaAddTaskModal show={showAddTaskModal} handleClose={this.handleTaskModalHide} id={this.props.id}/>
