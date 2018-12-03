@@ -7,8 +7,10 @@ import classNames from "classnames";
 import "./manage.css";
 import { TASK_STATUS } from "../../constants";
 import PomaAddProjectModal from "../../components/PomaAddProjectModal";
-import {Bar as BarChart} from 'react-chartjs';
+import { Bar as BarChart, Pie as PieChart } from 'react-chartjs';
+import moment from "moment";
 
+var randomColor = require('randomcolor'); // import the script
 const { DONE } = TASK_STATUS;
 
 export default class Manage extends Component {
@@ -32,6 +34,7 @@ export default class Manage extends Component {
 			projectsList.concat(projects[1]);
 			const labels = [];
 			const data = [];
+			const fillColor = [];
 			projectsList.forEach(async (project, index) => {
 				const { projectOwner, projectContributors, tasks } = project;
 				const { values } = projectContributors;
@@ -41,23 +44,21 @@ export default class Manage extends Component {
 					labels.push(`${firstName} ${lastName}`);
 					const count = _.filter(tasks, (task) => { if (task.userId === userId) return task }).length;
 					data.push(count);
+					fillColor.push(randomColor());
 				});
 				const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
 				const { firstName, lastName, userId } = ownerInfo;
 				labels.push(`${firstName} ${lastName}`);
 				const count = _.filter(tasks, (task) => { if (task.userId === userId) return task }).length;
 				data.push(count);
+				fillColor.push(randomColor());
 				const chartData = {
 					labels,
 					datasets: [
 						{
 							label: "My First dataset",
-							fill: false,
-							pointHoverRadius: 5,
-							pointRadius: 1,
-							pointHitRadius: 10,
+							fillColor,
 							data,
-							spanGaps: false,
 						}
 					]
 				};
@@ -103,8 +104,12 @@ export default class Manage extends Component {
 	}
 
 	renderProjectPanel = (project) => {
-		const { chartData, tasks, projectName } = project;
+		const { projectEndDate, chartData, tasks, projectName } = project;
 		const taskCount = this.countTasks(tasks);
+		const pieData = [
+			{ color:  "#32CD32", label: "Completed", value: taskCount.completed },
+			{ color:  "#f93d2f", label: "Not complete", value: taskCount.toComplete }
+		]
 		return (
 		<Panel key={projectName} id="collapsible-panel-example-2" defaultExpanded>
 			<Panel.Heading>
@@ -138,14 +143,26 @@ export default class Manage extends Component {
 					}
 			  	</Panel.Body>
 				<Jumbotron className="mb-0 br-0 text-center">
-					<Row className="show-grid">
+					<Row className="show-grid mb-4">
 						<Col xs={6} md={4}>
 							<strong>Task distribution</strong>
+						</Col>
+						<Col xs={6} md={4}>
+							<strong>Task status breakdown</strong>
+						</Col>
+						<Col xs={6} md={4}>
+							<strong>Project end date</strong>
 						</Col>
 					</Row>
 					<Row className="show-grid">
 						<Col xs={6} md={4}>
 							<BarChart data={chartData}/>
+						</Col>
+						<Col xs={6} md={4}>
+							<PieChart data={pieData}/>
+						</Col>
+						<Col xs={6} md={4}>
+							<h2>{Math.abs(moment({hours: 0}).diff(Number(projectEndDate), 'days'))} days</h2>
 						</Col>
 					</Row>
 				</Jumbotron>
