@@ -32,10 +32,10 @@ export default class Manage extends Component {
             const projects = await this.getUserProjectsAndTasks();
             const projectsList = projects[0];
 			projectsList.concat(projects[1]);
-			const labels = [];
-			const data = [];
-			const fillColor = [];
 			projectsList.forEach(async (project, index) => {
+				const labels = [];
+				const data = [];
+				const fillColor = [];
 				const { projectOwner, projectContributors, tasks } = project;
 				const { values } = projectContributors;
 				values.forEach(async (user) => {
