@@ -1,11 +1,13 @@
+import _ from "lodash";
 import { API } from "aws-amplify";
 import React, { Component } from "react";
-import { Panel, Alert, Badge } from "react-bootstrap";
+import { Panel, Alert, Badge, Jumbotron, ControlLabel, Row, Col } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import classNames from "classnames";
 import "./manage.css";
 import { TASK_STATUS } from "../../constants";
 import PomaAddProjectModal from "../../components/PomaAddProjectModal";
+import {Bar as BarChart} from 'react-chartjs';
 
 const { DONE } = TASK_STATUS;
 
@@ -17,7 +19,8 @@ export default class Manage extends Component {
 			projects: [],
 			showAddProjectModal: false,
 			addProjectModalData: {},
-			loading: true
+			loading: true,
+			chartData: {}
 		};
 	};
 
@@ -26,8 +29,42 @@ export default class Manage extends Component {
 			// Fetch tasks this user is working on
             const projects = await this.getUserProjectsAndTasks();
             const projectsList = projects[0];
-            projectsList.concat(projects[1]);
-            this.setState({ projects: projectsList, loading: false });
+			projectsList.concat(projects[1]);
+			const labels = [];
+			const data = [];
+			projectsList.forEach(async (project, index) => {
+				const { projectOwner, projectContributors, tasks } = project;
+				const { values } = projectContributors;
+				values.forEach(async (user) => {
+					const userInfo = await this.getUserInfo(user);
+					const { firstName, lastName, userId } = userInfo;
+					labels.push(`${firstName} ${lastName}`);
+					const count = _.filter(tasks, (task) => { if (task.userId === userId) return task }).length;
+					data.push(count);
+				});
+				const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
+				const { firstName, lastName, userId } = ownerInfo;
+				labels.push(`${firstName} ${lastName}`);
+				const count = _.filter(tasks, (task) => { if (task.userId === userId) return task }).length;
+				data.push(count);
+				const chartData = {
+					labels,
+					datasets: [
+						{
+							label: "My First dataset",
+							fill: false,
+							pointHoverRadius: 5,
+							pointRadius: 1,
+							pointHitRadius: 10,
+							data,
+							spanGaps: false,
+						}
+					]
+				};
+				projectsList[index].chartData = chartData;
+			});
+			// TODO: Find a better way to achieve this without a forced set timeout.
+			setTimeout(() => { this.setState({ projects: projectsList, loading: false }) }, 1000);
         }
     }
 
@@ -38,6 +75,8 @@ export default class Manage extends Component {
 	getTaskInfo = (taskId) => API.get("api", `/api/task/${taskId}`);
 
 	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
+
+    getUserInfo = (userId) => API.get("api", `/api/user/${userId}`);
 
 	handleClick = (projectData) => {
 		this.setState({ showAddProjectModal: true, addProjectModalData: projectData })
@@ -64,7 +103,7 @@ export default class Manage extends Component {
 	}
 
 	renderProjectPanel = (project) => {
-		const { tasks, projectName } = project;
+		const { chartData, tasks, projectName } = project;
 		const taskCount = this.countTasks(tasks);
 		return (
 		<Panel key={projectName} id="collapsible-panel-example-2" defaultExpanded>
@@ -98,6 +137,18 @@ export default class Manage extends Component {
 						})
 					}
 			  	</Panel.Body>
+				<Jumbotron className="mb-0 br-0 text-center">
+					<Row className="show-grid">
+						<Col xs={6} md={4}>
+							<strong>Task distribution</strong>
+						</Col>
+					</Row>
+					<Row className="show-grid">
+						<Col xs={6} md={4}>
+							<BarChart data={chartData}/>
+						</Col>
+					</Row>
+				</Jumbotron>
 			</Panel.Collapse>
 		</Panel>
 		)
@@ -133,7 +184,7 @@ export default class Manage extends Component {
 		if (loading) {
 			alert = (
 				<div className="text-center mt-3x">
-					<i className="fas fa-spinner fa-spin fa-5x"/>
+					<i className="fas fa-spinner fa-spin fa-5x mt-100"/>
 				</div>
 			)
 		}

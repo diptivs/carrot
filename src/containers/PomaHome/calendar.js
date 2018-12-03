@@ -1,3 +1,4 @@
+import { API } from "aws-amplify";
 import React, { Component } from "react";
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
@@ -6,6 +7,7 @@ import CalendarEventModal from '../../components/CalendarEventModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.css';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
+import Moment from "moment";
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -20,6 +22,20 @@ export default class Calendar extends Component {
             events,
         }
     }
+
+    async componentDidMount() {
+        const schedule = await this.getSchedule();
+        console.log(schedule);
+    }
+
+    getSchedule = () => {
+        return API.get("api", "/api/schedule", {
+            queryStringParameters: {
+                startDate: moment().subtract(1, 'weeks').format('YYYY-MM-DD'),
+                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD')
+            },
+        });
+    };
 
     toggleEditModal = (event) => {
         this.setState({ showEventModal: true, event });

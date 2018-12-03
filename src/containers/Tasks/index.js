@@ -126,7 +126,7 @@ export default class Tasks extends Component {
 		if (loading) {
 			alert = (
 				<div className="text-center mt-3x">
-					<i className="fas fa-spinner fa-spin fa-5x"/>
+					<i className="fas fa-spinner fa-spin fa-5x mt-100"/>
 				</div>
 			)
 		}

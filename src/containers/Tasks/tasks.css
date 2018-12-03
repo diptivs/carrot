@@ -32,7 +32,7 @@ div.inline { float:left; }
 }
 .task-card span {
     display: block;
-    height: 10px;
+    height: 15px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -261,6 +261,9 @@ a:hover {
 }
 
 /* Margin classes */
+.mb-0 {
+  margin-bottom: 0rem!important;
+}
 .mb-1 {
   margin-bottom: .25rem!important;
 }
@@ -287,6 +290,9 @@ a:hover {
 }
 .mt-3x {
   margin-top: 3rem!important;
+}
+.mt-100 {
+  margin-top: 100px!important;
 }
 .m-1 {
   margin: .25rem!important;
@@ -331,20 +337,23 @@ a:hover {
   margin-top: 4rem!important;
 }
 .w-25 {
-  width: 25%;
+  width: 25%!important;
 }
 .w-40 {
-  width: 40%;
+  width: 40%!important;
 }
 .w-50 {
-  width: 50%;
+  width: 50%!important;
 }
 .w-60 {
-  width: 60%;
+  width: 60%!important;
 }
 .w-75 {
-  width: 75%;
+  width: 75%!important;
 }
 .w-100 {
-  width: 100%;
+  width: 100%!important;
+}
+.br-0 {
+  border-radius: 0px!important;
 }
