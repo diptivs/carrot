@@ -10,7 +10,9 @@ export default class PomaAddTaskModal extends Component {
 		this.state = {
             step: 0,
             projects: [],
-            usersArray: []
+            usersArray: [],
+            taskPomodoroCount: 0,
+            taskPriority: 0,
 		};
     }
 
@@ -18,7 +20,7 @@ export default class PomaAddTaskModal extends Component {
         if (!this.props.data) {
             return;
         }
-        const { userId, taskId, taskName, taskStatus, taskPomodoroCount, taskDescription, projectId, projectName } = this.props.data;
+        const { userId, taskId, taskName, taskStatus, taskPomodoroCount, taskPriority, taskDescription, projectId, projectName } = this.props.data;
         // get contributors for this project
         const { projectOwner, projectContributors } = await this.getProjectInfo(projectId);
         const { values } = projectContributors;
@@ -39,6 +41,7 @@ export default class PomaAddTaskModal extends Component {
             taskId,
             taskName,
             taskPomodoroCount,
+            taskPriority,
             taskDescription,
             projectId,
             projectName,
@@ -57,6 +60,8 @@ export default class PomaAddTaskModal extends Component {
         }
         this.setState({ step: 0 });
     }
+
+    getUserInfo = (userId) => API.get("api", `/api/user/${userId}`);
 
     getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
@@ -107,11 +112,15 @@ export default class PomaAddTaskModal extends Component {
         this.setState({ projectId: value, projectName, usersArray });
     }
 
-    handleAssigneeSelect = (e) => {
+    handleAssigneeSelect = async (e) => {
         const { target: { value } } = e;
         const index = e.nativeEvent.target.selectedIndex;
         const userName = e.nativeEvent.target[index].text;
-        this.setState({ userId: value, userName });
+        // Get priority
+        const user = await this.getUserInfo(value);
+        const { taskId: { values } } = user
+        const taskCount = values ? values.length : 0;
+        this.setState({ userId: value, userName, taskPriority: taskCount });
     }
 
     renderStep1() {
@@ -123,14 +132,6 @@ export default class PomaAddTaskModal extends Component {
                     label="Text"
                     placeholder="Task Name"
                     value={this.state.taskName}
-                    onChange={this.handleChange}
-                />
-                <FormControl
-                    id="taskPomodoroCount"
-                    type="number"
-                    label="Points"
-                    placeholder="Poma task points"
-                    value={this.state.taskPomodoroCount}
                     onChange={this.handleChange}
                 />
                 <FormControl
@@ -189,11 +190,10 @@ export default class PomaAddTaskModal extends Component {
     }
 
     renderStep4 = () => {
-        const { taskName, userName, taskDescription, taskPomodoroCount, projectName } = this.state;
+        const { taskName, userName, taskDescription, projectName } = this.state;
         return (
             <div>
                <div><strong>Task Name: </strong>{taskName}</div>
-               <div><strong>Task Pomodoro Count: </strong>{taskPomodoroCount}</div>
                <div><strong>Task Description: </strong>{taskDescription}</div>
                <div><strong>Assignee: </strong>{userName}</div>
                <div><strong>Project: </strong>{projectName}</div>

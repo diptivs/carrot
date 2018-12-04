@@ -93,17 +93,17 @@ export default class Task extends Component {
 		if (!isSubmit) {
 			return;
 		} else {
-			const { taskId, projectId, taskName, taskDescription, taskStatus, taskPomodoroCount, userId } = data;
+			const { taskId, projectId, taskName, taskPriority, taskDescription, taskStatus, taskPomodoroCount, userId } = data;
 			API.put("api", `/api/task/${taskId}`, {
 				body: {
 					taskId,
 					projectId,
 					taskName,
 					taskDescription,
+					taskPriority,
 					taskStatus,
 					taskPomodoroCount,
 					userId,
-					taskPriority: 1
 				}
 			});
 		}
