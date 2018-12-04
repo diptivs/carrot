@@ -1,5 +1,12 @@
-# PomaFocus
-Frontend code for CMPE283 Project 2
+PomaFocus
+======================
+
+[PomaFocus](http://pomafocus.com/) is a highly intelligble fully functioning task management service. It builds upon the ideas [pomodoro technique](https://francescocirillo.com/pages/pomodoro-technique). Through PomaFocus, not only you create projects/ tasks, but we schedule your day/ week out for you! That way you can be more productive and focus on the tasks at hand.
+
+## Table of content
+
+- [Project Logistics](#project-logistics)
+- [Features](#features)
 
 ## Project Logistics
 
@@ -21,9 +28,7 @@ Frontend code for CMPE283 Project 2
 - [Dipti Shiralkar](https://www.linkedin.com/in/diptivs/)
 - [Meghana Ynarasimha](https://www.linkedin.com/in/ymeghana/)
 
-## Project Introduction
-
-###### Features
+## Features
 - Project Creation
 - Task Creation
 - Task Management
@@ -32,19 +37,3 @@ Frontend code for CMPE283 Project 2
 - Calendar view
 - Task notifications/ reminders
 - Integrated task start/ stop timers
-
-###### CRUD Operations
-- Project Creation
-- Project Read
-- Project Update
-- Project Delete
-
-- Task Creation
-- Task Read
-- Task Update
-- Task Delete
-
-- Schedule Creation
-- Schedule Update
-
-## Screenshots
