@@ -5,6 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import classNames from "classnames";
 import "./tasks.css";
 import { TASK_STATUS } from "../../constants";
+import SetPriorityModal from "../../components/SetPriorityModal";
 
 const { DONE } = TASK_STATUS;
 
@@ -14,7 +15,9 @@ export default class Tasks extends Component {
 		super(props);
 		this.state = {
 			projects: [],
-			loading: true
+			loading: true,
+			showPriorityModal: false,
+			tasks: null
 		};
 	};
 
@@ -48,6 +51,14 @@ export default class Tasks extends Component {
 
  	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
+	showPriorityList = (project) => {
+		const tasks = project.tasks.map((task) => {
+			const { taskName, taskId } = task;
+			return { taskName, taskId }
+		});
+		this.setState({ showPriorityModal: true, tasks });
+	}
+
 	renderProjectPanel = (project) => {
 		const { tasks, project: { projectName } } = project;
 		const taskCount = this.countTasks([project]);
@@ -64,6 +75,7 @@ export default class Tasks extends Component {
 						<span className="pull-right"><i className="far fa-eye"/></span>
 						<span className="pull-right"><i className="far fa-eye-slash"/></span>					
 					</Panel.Toggle>
+					<span className="pull-right pointer" onClick={() => this.showPriorityList(project)}><i className="fas fa-list-ol"/></span>
 			  	</Panel.Title>
 			</Panel.Heading>
 			<Panel.Collapse>
@@ -105,9 +117,12 @@ export default class Tasks extends Component {
 		return { toComplete, completed }
 	}
 
-	
+    handlePriorityModalHide = () => {
+        this.setState({ showPriorityModal: false });
+    }
+
 	render() {
-		const { projects, loading } = this.state;
+		const { projects, loading, showPriorityModal, tasks } = this.state;
 		const taskCount = this.countTasks(projects);
 		let alert = (
 			<Alert className="poma-alert text-center">
@@ -137,6 +152,9 @@ export default class Tasks extends Component {
 					Object.keys(projects).map((project) => {
 						return this.renderProjectPanel(projects[project]);
 					})
+				}
+				{
+					showPriorityModal ? <SetPriorityModal show={showPriorityModal} handleClose={this.handlePriorityModalHide} tasks={tasks}/> : null
 				}
 			</div>
 		);
