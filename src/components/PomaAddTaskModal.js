@@ -67,6 +67,8 @@ export default class PomaAddTaskModal extends Component {
 
 	getUserProjectsAndTasks = () => API.get("api", "/api/project/detail");
 
+	getTaskInfo = (taskId) => API.get("api", `/api/task/${taskId}`);
+    
     getUserProjects = (userId) => {
         return API.get("api", "/api/project", {
             queryStringParameters: {
@@ -114,12 +116,20 @@ export default class PomaAddTaskModal extends Component {
 
     handleAssigneeSelect = async (e) => {
         const { target: { value } } = e;
+        const { projectId } = this.state;
         const index = e.nativeEvent.target.selectedIndex;
         const userName = e.nativeEvent.target[index].text;
         // Get priority
         const user = await this.getUserInfo(value);
         const { taskId: { values } } = user
-        const taskCount = values ? values.length : 0;
+        let filteredTasks = [];
+        if (values && values.length) {
+            filteredTasks = _.filter(values, async (task) => { 
+                const taskInfo = await this.getTaskInfo(task);
+                if (taskInfo.projectId === projectId) return task
+            });
+        }
+        const taskCount = filteredTasks.length || 0;
         this.setState({ userId: value, userName, taskPriority: taskCount });
     }
 
