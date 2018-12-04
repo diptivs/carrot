@@ -110,13 +110,13 @@ i {
   outline: 0px;
 }
 .btn-poma:hover {
-  background-color: #FA6449;
+  background-color: #FA6449!important;
   color: white;
   border: none;
 }
 
 .btn-poma:hover, .clasbtn-poma:active, .btn-poma:focus {
-  background-color: #FA6449;
+  background-color: #FA6449!important;
   color: white;
   border: none;
 }
@@ -131,7 +131,7 @@ i {
   outline: 0px;
 }
 .btn-poma-cancel:hover, .clasbtn-poma-cancel:active, .btn-poma-cancel:focus {
-  background-color: #FDBF49;
+  background-color: #FDBF49!important;
   color: white;
   border: none;
 }
