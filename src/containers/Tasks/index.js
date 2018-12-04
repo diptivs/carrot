@@ -123,18 +123,18 @@ export default class Tasks extends Component {
 		tasks.forEach((task, index) => {
 			tasks[index].taskPriority = index;
 			const { taskId, projectId, taskName, taskDescription, taskStatus, taskPomodoroCount, userId } = task;
-			API.put("api", `/api/task/${taskId}`, {
-				body: {
-					taskId,
-					projectId,
-					taskName,
-					taskDescription,
-					taskPriority: index,
-					taskStatus,
-					taskPomodoroCount,
-					userId,
-				}
-			});
+			// API.put("api", `/api/task/${taskId}`, {
+			// 	body: {
+			// 		taskId,
+			// 		projectId,
+			// 		taskName,
+			// 		taskDescription,
+			// 		taskPriority: index,
+			// 		taskStatus,
+			// 		taskPomodoroCount,
+			// 		userId,
+			// 	}
+			// });
 		});
 		const { projectId, projects } = this.state;
 		const projectsCopy = { ...projects }
