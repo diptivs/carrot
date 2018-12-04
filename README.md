@@ -47,4 +47,4 @@ Frontend code for CMPE283 Project 2
 - Schedule Creation
 - Schedule Update
 
-###### Screenshots
+## Screenshots
