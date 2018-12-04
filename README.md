@@ -1,6 +1,8 @@
 # PomaFocus
 Frontend code for CMPE283 Project 2
 
+## Project Logistics
+
 ###### University Name
 [http://www.sjsu.edu/](http://www.sjsu.edu/)
 
@@ -11,6 +13,7 @@ Frontend code for CMPE283 Project 2
 [Sanjay Garje](https://www.linkedin.com/in/sanjaygarje/)
 
 ######  ISA
+[Anushri Srinath Aithal](https://www.linkedin.com/in/anushri-aithal/)
 
 ###### Student
 [Navjot Bola](https://www.linkedin.com/in/navjotbola/)
@@ -18,8 +21,7 @@ Frontend code for CMPE283 Project 2
 [Dipti Shiralkar](https://www.linkedin.com/in/diptivs/)
 [Meghana Ynarasimha](https://www.linkedin.com/in/ymeghana/)
 
-###### Project Introduction
-(What the application does, feature list)
+## Project Introduction
 
 ###### Features
 - Project Creation
