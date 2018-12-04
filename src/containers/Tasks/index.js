@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { API } from "aws-amplify";
 import React, { Component } from "react";
 import { Panel, Alert, Badge } from "react-bootstrap";
@@ -17,7 +18,8 @@ export default class Tasks extends Component {
 			projects: [],
 			loading: true,
 			showPriorityModal: false,
-			tasks: null
+			tasks: null,
+			projectId: null
 		};
 	};
 
@@ -52,15 +54,14 @@ export default class Tasks extends Component {
  	getProjectInfo = (projectId) => API.get("api", `/api/project/${projectId}`);
 
 	showPriorityList = (project) => {
-		const tasks = project.tasks.map((task) => {
-			const { taskName, taskId } = task;
-			return { taskName, taskId }
-		});
-		this.setState({ showPriorityModal: true, tasks });
+		const { tasks, project: { projectId } } = project;
+		const tasksToPass = _.sortBy(tasks, 'taskPriority');
+		this.setState({ showPriorityModal: true, tasks: tasksToPass, projectId });
 	}
 
 	renderProjectPanel = (project) => {
 		const { tasks, project: { projectName } } = project;
+		const taskOrder = _.sortBy(tasks, 'taskPriority');
 		const taskCount = this.countTasks([project]);
 		return (
 		<Panel key={projectName} id="collapsible-panel-example-2" defaultExpanded>
@@ -81,7 +82,7 @@ export default class Tasks extends Component {
 			<Panel.Collapse>
 			  	<Panel.Body>
 					{
-						tasks.map((task) => {
+						taskOrder.map((task) => {
 							const { taskId, taskName, taskStatus, taskDescription } = task;
 							return(<div key={taskName} className="inline">
 								<LinkContainer to={`/tasks/${taskId}`}>
@@ -117,8 +118,15 @@ export default class Tasks extends Component {
 		return { toComplete, completed }
 	}
 
-    handlePriorityModalHide = () => {
-        this.setState({ showPriorityModal: false });
+    handlePriorityModalHide = (data, isSubmit) => {
+		const { tasks } = data;
+		tasks.forEach((task, index) => {
+			tasks[index].taskPriority = index;
+		});
+		const { projectId, projects } = this.state;
+		const projectsCopy = { ...projects }
+		projectsCopy[projectId].tasks = tasks;
+        this.setState({ showPriorityModal: false, projects: projectsCopy });
     }
 
 	render() {
