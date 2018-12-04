@@ -16,10 +16,10 @@ Frontend code for CMPE283 Project 2
 [Anushri Srinath Aithal](https://www.linkedin.com/in/anushri-aithal/)
 
 ###### Student
-[Navjot Bola](https://www.linkedin.com/in/navjotbola/)
-[Parvizsho Aminov](https://www.linkedin.com/in/parvizsho/)
-[Dipti Shiralkar](https://www.linkedin.com/in/diptivs/)
-[Meghana Ynarasimha](https://www.linkedin.com/in/ymeghana/)
+- [Navjot Bola](https://www.linkedin.com/in/navjotbola/)
+- [Parvizsho Aminov](https://www.linkedin.com/in/parvizsho/)
+- [Dipti Shiralkar](https://www.linkedin.com/in/diptivs/)
+- [Meghana Ynarasimha](https://www.linkedin.com/in/ymeghana/)
 
 ## Project Introduction
 
