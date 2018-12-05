@@ -46,12 +46,12 @@ export default class Manage extends Component {
 					data.push(count);
 					fillColor.push(randomColor());
 				});
-				const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
-				const { firstName, lastName, userId } = ownerInfo;
-				labels.push(`${firstName} ${lastName}`);
-				const count = _.filter(tasks, (task) => { if (task.userId === userId) return task }).length;
-				data.push(count);
-				fillColor.push(randomColor());
+				// const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
+				// const { firstName, lastName, userId } = ownerInfo;
+				// labels.push(`${firstName} ${lastName}`);
+				// const count = _.filter(tasks, (task) => { if (task.userId === userId) return task }).length;
+				// data.push(count);
+				// fillColor.push(randomColor());
 				const chartData = {
 					labels,
 					datasets: [
@@ -99,7 +99,9 @@ export default class Manage extends Component {
 					projectStartDate: startDate.format('X') * 1000,
 					projectEndDate: endDate.format('X')  * 1000,
 				}
-			});
+			}).then(() => {
+				window.location.reload();
+			});	
 		}
 	}
 
@@ -110,6 +112,22 @@ export default class Manage extends Component {
 			{ color:  "#32CD32", label: "Completed", value: taskCount.completed },
 			{ color:  "#f93d2f", label: "Not complete", value: taskCount.toComplete }
 		]
+		console.log(chartData);
+		const barChart = (chartData.datasets && chartData.datasets.length) ? <BarChart data={chartData}/> : <Alert><h3>No data to show</h3></Alert>
+		const pieChart = !(taskCount.completed === 0 && taskCount.toComplete === 0) ? <PieChart data={pieData}/> : <Alert><h3>No data to show</h3></Alert>
+		const tasksDisplay = !tasks.length ? <Alert><h3 className="text-center">No tasks exist under this project</h3></Alert> :
+		(tasks.map((task) => {
+			const { taskId, taskName, taskStatus, taskDescription } = task;
+			return(<div key={taskName} className="inline">
+				<LinkContainer to={`/tasks/${taskId}`}>
+					<div className={classNames("task-card animated fadeIn", taskStatus === DONE ? "done" : null)}>
+						<div className="task-card-title">{taskName}</div>
+						<hr className="mb-3 mt-3"/>
+						<span>{taskDescription}</span>
+					</div>
+				</LinkContainer>
+			</div>)
+		}))
 		return (
 		<Panel key={projectName} id="collapsible-panel-example-2" defaultExpanded>
 			<Panel.Heading>
@@ -127,20 +145,7 @@ export default class Manage extends Component {
 			</Panel.Heading>
 			<Panel.Collapse>
 			  	<Panel.Body>
-					{
-						tasks.map((task) => {
-							const { taskId, taskName, taskStatus, taskDescription } = task;
-							return(<div key={taskName} className="inline">
-								<LinkContainer to={`/tasks/${taskId}`}>
-									<div className={classNames("task-card animated fadeIn", taskStatus === DONE ? "done" : null)}>
-										<div className="task-card-title">{taskName}</div>
-										<hr className="mb-3 mt-3"/>
-										<span>{taskDescription}</span>
-									</div>
-								</LinkContainer>
-							</div>)
-						})
-					}
+					{ tasksDisplay }
 			  	</Panel.Body>
 				<Jumbotron className="mb-0 br-0 text-center">
 					<Row className="show-grid mb-4">
@@ -156,10 +161,10 @@ export default class Manage extends Component {
 					</Row>
 					<Row className="show-grid">
 						<Col xs={6} md={4}>
-							<BarChart data={chartData}/>
+							{ barChart }
 						</Col>
 						<Col xs={6} md={4}>
-							<PieChart data={pieData}/>
+							{ pieChart }
 						</Col>
 						<Col xs={6} md={4}>
 							<h2>{Math.abs(moment({hours: 0}).diff(Number(projectEndDate), 'days'))} days</h2>

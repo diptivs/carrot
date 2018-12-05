@@ -106,7 +106,9 @@ export default class Task extends Component {
 					taskPomodoroCount,
 					userId,
 				}
-			});
+			}).then(() => {
+				window.location.reload();
+			});	
 		}
 	}
 
@@ -170,8 +172,6 @@ export default class Task extends Component {
 						<h5 className="task-card-text-block"><i className="fas fa-user fa-fw"/>{`${firstName} ${lastName} - ${emailId}`}</h5>
 						<span className="task-card-text-label">Project:</span>
 						<h5 className="task-card-text-block">{projectName}</h5>
-						<span className="task-card-text-label">Pomodoro count:</span>
-						<h5 className="task-card-text-block">{taskPomodoroCount}</h5>
 					</div>
 				</div>
 				{
