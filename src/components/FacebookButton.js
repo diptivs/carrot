@@ -50,6 +50,7 @@ export default class FacebookButton extends Component {
   }
 
   async handleResponse(data) {
+    console.log(data);
     const { email, accessToken: token, expiresIn } = data;
     const expires_at = expiresIn * 1000 + new Date().getTime();
     const user = { email };
