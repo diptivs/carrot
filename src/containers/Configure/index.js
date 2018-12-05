@@ -1,20 +1,39 @@
 import React, { Component } from "react";
-import LexChat from "react-lex";
 import "./configure.css";
 import config from "../../config";
+import { ChatBot, AmplifyTheme } from 'aws-amplify-react';
+
+const myTheme = {
+  ...AmplifyTheme,
+  sectionHeader: {
+    ...AmplifyTheme.sectionHeader,
+    backgroundColor: '#ff6600'
+  }
+};
 
 export default class Configure extends Component {
+
+	handleComplete(err, confirmation) {
+		if (err) {
+		  alert('Configuration setup failed')
+		  return;
+		}
+	
+		alert('Success: ' + JSON.stringify(confirmation, null, 2));
+		return 'Configuration is complete! Start adding some tasks';
+	}	
+
 	render() {
-		console.log(config.cognito);
 		return (
 			<div className="configure-container">
-				<LexChat botName="PomaFocus"
-                	IdentityPoolId={config.cognito.IDENTITY_POOL_ID}
-                	placeholder="Start by telling us when your day starts"
-                	backgroundColor="#FFFFFF"
-					height="430px"
-                	region={config.cognito.REGION}
-                	headerText="Configure here" />
+				<ChatBot
+					title="My Bot"
+					theme={myTheme}
+					botName="PomaFocus"
+					welcomeMessage="Welcome, start by telling me what time your day usually starts (i.e HH:00 AM)"
+					onComplete={this.handleComplete.bind(this)}
+					clearOnComplete={true}
+				/>
 			</div>
 		);
 	}
