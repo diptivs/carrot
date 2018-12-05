@@ -119,6 +119,7 @@ export default class Tasks extends Component {
 	}
 
     handlePriorityModalHide = (data, isSubmit) => {
+		this.setState({ showPriorityModal: false });
 		if (!isSubmit) {
 			return;
 		}
@@ -137,7 +138,7 @@ export default class Tasks extends Component {
 		const { projectId, projects } = this.state;
 		const projectsCopy = { ...projects }
 		projectsCopy[projectId].tasks = tasks;
-        this.setState({ showPriorityModal: false, projects: projectsCopy });
+        this.setState({ projects: projectsCopy });
     }
 
 	render() {
