@@ -29,7 +29,7 @@ export default class Tasks extends Component {
 			// Fetch tasks this user is working on
 			const projectTaskMap = {};
 			const tasks = await this.getUserTasks(this.props.id);
-			if (tasks.taskId) {	
+			if (tasks.taskId) {
 				tasks.taskId.values.forEach(async (task) => {
 					// Get task info
 					const taskInfo = await this.getTaskInfo(task);
@@ -44,6 +44,8 @@ export default class Tasks extends Component {
 					}
 					this.setState({ projects: projectTaskMap, loading: false });
 				});
+			} else {
+				this.setState({ projects: {}, loading: false });				
 			}
 		}
     }

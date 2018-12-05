@@ -208,7 +208,7 @@ export default class PomaAddProjectModal extends Component {
                <div><strong>Start date: </strong>{moment(startDate).format('MMM Do YY')}</div>
                <div><strong>End date: </strong>{moment(endDate).format('MMM Do YY')}</div>
                <div className="flex-container">
-                    <strong>End date: </strong>
+                    <strong>Project Contributors: </strong>
                 {
                     projectContributors.map((contributor, index) => {
                         return <Badge key={index} className="contributor-label">{contributor}</Badge>

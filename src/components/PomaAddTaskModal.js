@@ -121,10 +121,9 @@ export default class PomaAddTaskModal extends Component {
         const userName = e.nativeEvent.target[index].text;
         // Get priority
         const user = await this.getUserInfo(value);
-        const { taskId: { values } } = user
         let filteredTasks = [];
-        if (values && values.length) {
-            filteredTasks = _.filter(values, async (task) => { 
+        if (user.taskId && user.taskId.values && user.taskId.values.length) {
+            filteredTasks = _.filter(user.taskId.values, async (task) => { 
                 const taskInfo = await this.getTaskInfo(task);
                 if (taskInfo.projectId === projectId) return task
             });

@@ -66,7 +66,9 @@ export default class Manage extends Component {
 			});
 			// TODO: Find a better way to achieve this without a forced set timeout.
 			setTimeout(() => { this.setState({ projects: projectsList, loading: false }) }, 1000);
-        }
+        } else {
+			this.setState({ projects: [], loading: false });				
+		}
     }
 
 	getUserProjectsAndTasks = () => API.get("api", "/api/project/detail");

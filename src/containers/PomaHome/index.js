@@ -75,7 +75,7 @@ export default class PomaHome extends Component {
 					projectDescription,
 					projectStatus: "New",
 					projectOwner: this.props.id,
-					projectContributors: projectContributorsIDs,
+					projectContributors: projectContributorsIDs.concat(this.props.id),
 					projectStartDate: startDate.format('X') * 1000,
 					projectEndDate: endDate.format('X')  * 1000,
 				}
