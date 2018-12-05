@@ -30,6 +30,7 @@ export default class Home extends Component {
 		// console.log(info);
 		if(this.props.isAuthenticated)
 		{
+			console.log(info);
 			// Fetch id
 			this.setState({id: info ? info.id : null});
 			// this.props.setUserId(info ? info.id : null);

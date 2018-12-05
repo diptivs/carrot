@@ -20,13 +20,14 @@ class App extends Component {
   }
 
   async componentDidMount() {
-
+    console.log('App.js componentDidMount')
     this.loadFacebookSDK();
     this.loadGoogleSDK();
     try {
         await Auth.currentAuthenticatedUser();
         this.userHasAuthenticated(true);
         const info = await Auth.currentAuthenticatedUser();
+        console.log(info);
         // Fetch email
         var email = info.attributes ? info.attributes['email'] : info.email;
         
