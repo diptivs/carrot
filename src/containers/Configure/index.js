@@ -5,6 +5,7 @@ import config from "../../config";
 
 export default class Configure extends Component {
 	render() {
+		console.log(config.cognito);
 		return (
 			<div className="configure-container">
 				<LexChat botName="PomaFocus"
@@ -12,7 +13,7 @@ export default class Configure extends Component {
                 	placeholder="Start by telling us when your day starts"
                 	backgroundColor="#FFFFFF"
 					height="430px"
-                	region="us-east-1"
+                	region={config.cognito.REGION}
                 	headerText="Configure here" />
 			</div>
 		);
