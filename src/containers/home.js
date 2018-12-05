@@ -27,6 +27,7 @@ export default class Home extends Component {
 
 	async getUserInfo() {
 		const info = await Auth.currentUserInfo();
+		console.log(info);
 		if(this.props.isAuthenticated)
 		{
 			// Fetch id
