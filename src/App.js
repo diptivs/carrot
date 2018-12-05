@@ -24,6 +24,7 @@ class App extends Component {
     this.loadFacebookSDK();
     this.loadGoogleSDK();
     try {
+        await Auth.currentSession();
         await Auth.currentAuthenticatedUser();
         this.userHasAuthenticated(true);
         const info = await Auth.currentAuthenticatedUser();
@@ -48,7 +49,7 @@ class App extends Component {
           }
         }
     } catch (e) {
-        if (e !== "not authenticated") {
+        if (e !== "No current user") {
         alert(e);
       }
     }
