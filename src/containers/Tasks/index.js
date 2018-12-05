@@ -119,6 +119,9 @@ export default class Tasks extends Component {
 	}
 
     handlePriorityModalHide = (data, isSubmit) => {
+		if (!isSubmit) {
+			return;
+		}
 		const { tasks } = data;
 		const tasksList = []
 		tasks.forEach((task, index) => {
