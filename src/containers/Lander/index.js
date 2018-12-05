@@ -4,7 +4,7 @@ export default class Lander extends Component {
 	render() {
 		return (
 			<div className="lander">
-				LANDING PAGE HERE
+				LANDING PAGE WILL BE HERE
 			</div>
 		);
 	}
