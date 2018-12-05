@@ -14,6 +14,7 @@ export default class Task extends Component {
 		console.log(this.props);
 		this.state = {
 			addTaskModalData: {},
+			taskPriority: null,
 			showAddTaskModal: false,
 			taskName: null,
 			taskPomodoroCount: null,
@@ -36,7 +37,7 @@ export default class Task extends Component {
 		const location = this.props.location.pathname.split("/");
 		// Fetch task info
 		const taskInfo = await this.getTaskInfo(location[location.length - 1]);
-		const { taskName, taskPomodoroCount, taskPomodoroStartTime, taskPomodoroEndTime, taskStatus, projectId, taskDescription, userId, taskId } = taskInfo;
+		const { taskName, taskPriority, taskPomodoroCount, taskPomodoroStartTime, taskPomodoroEndTime, taskStatus, projectId, taskDescription, userId, taskId } = taskInfo;
 		// Fetch task assignee info
 		const userInfo = await this.getUserInfo(userId)
 		const { firstName, lastName, emailId } = userInfo;
@@ -46,6 +47,7 @@ export default class Task extends Component {
 		this.setState({
 			taskName,
 			taskPomodoroCount,
+			taskPriority,
 			taskPomodoroStartTime,
 			taskPomodoroEndTime,
 			taskStatus,
@@ -93,11 +95,10 @@ export default class Task extends Component {
 		if (!isSubmit) {
 			return;
 		} else {
-			const { taskId, projectId, taskName, taskPriority, taskDescription, taskStatus, taskPomodoroCount, userId } = data;
+			const { taskId, taskName, taskPriority, taskDescription, taskStatus, taskPomodoroCount, userId } = data;
 			API.put("api", `/api/task/${taskId}`, {
 				body: {
 					taskId,
-					projectId,
 					taskName,
 					taskDescription,
 					taskPriority,

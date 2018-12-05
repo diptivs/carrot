@@ -120,21 +120,16 @@ export default class Tasks extends Component {
 
     handlePriorityModalHide = (data, isSubmit) => {
 		const { tasks } = data;
+		const tasksList = []
 		tasks.forEach((task, index) => {
 			tasks[index].taskPriority = index;
-			const { taskId, projectId, taskName, taskDescription, taskStatus, taskPomodoroCount, userId } = task;
-			// API.put("api", `/api/task/${taskId}`, {
-			// 	body: {
-			// 		taskId,
-			// 		projectId,
-			// 		taskName,
-			// 		taskDescription,
-			// 		taskPriority: index,
-			// 		taskStatus,
-			// 		taskPomodoroCount,
-			// 		userId,
-			// 	}
-			// });
+			const { taskId } = task;	
+			tasksList.push({ taskId, taskPriority: index })	
+		});
+		API.put("api", "/api/task", {
+			body: {
+				tasks: tasksList,
+			}
 		});
 		const { projectId, projects } = this.state;
 		const projectsCopy = { ...projects }
