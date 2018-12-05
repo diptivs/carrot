@@ -7,6 +7,7 @@ import classNames from "classnames";
 import "./tasks.css";
 import { TASK_STATUS } from "../../constants";
 import SetPriorityModal from "../../components/SetPriorityModal";
+import moment from "moment";
 
 const { DONE } = TASK_STATUS;
 
@@ -134,12 +135,24 @@ export default class Tasks extends Component {
 			body: {
 				tasks: tasksList,
 			}
+		}).then(() => {
+			this.getSchedule();
 		});
 		const { projectId, projects } = this.state;
 		const projectsCopy = { ...projects }
 		projectsCopy[projectId].tasks = tasks;
         this.setState({ projects: projectsCopy });
     }
+
+	getSchedule = () => {
+        return API.get("api", "/api/schedule", {
+            queryStringParameters: {
+                startDate: moment().format('YYYY-MM-DD'),
+                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD'),
+                create: true
+            },
+        });
+	};
 
 	render() {
 		const { projects, loading, showPriorityModal, tasks } = this.state;
