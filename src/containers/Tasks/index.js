@@ -84,10 +84,10 @@ export default class Tasks extends Component {
 			  	<Panel.Body>
 					{
 						taskOrder.map((task) => {
-							const { taskId, taskName, taskStatus, taskDescription } = task;
+							const { taskId, taskName, taskPomodoroEndTime, taskDescription } = task;
 							return(<div key={taskName} className="inline">
 								<LinkContainer to={`/tasks/${taskId}`}>
-									<div className={classNames("task-card animated fadeIn", taskStatus === DONE ? "done" : null)}>
+									<div className={classNames("task-card animated fadeIn", taskPomodoroEndTime ? "done" : null)}>
 										<div className="task-card-title">{taskName}</div>
 										<hr className="mb-3 mt-3"/>
 										<span>{taskDescription}</span>
@@ -131,6 +131,7 @@ export default class Tasks extends Component {
 			const { taskId } = task;	
 			tasksList.push({ taskId, taskPriority: index })	
 		});
+		console.log(tasksList);
 		API.put("api", "/api/task", {
 			body: {
 				tasks: tasksList,

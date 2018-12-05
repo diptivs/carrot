@@ -10,8 +10,8 @@ const SortableList = SortableContainer(({items}) => {
   return (
     <ul className="SortableList">
         {items.map((value, index) => {
-            const { taskName, taskId } = value;
-            return <SortableItem key={taskId} index={index} value={taskName} />
+            const { taskPomodoroEndTime, taskName, taskId } = value;
+            return <SortableItem disabled={!!taskPomodoroEndTime} key={taskId} index={index} value={taskName} />
         })}
     </ul>
   );
