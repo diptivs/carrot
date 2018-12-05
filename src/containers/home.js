@@ -26,24 +26,25 @@ export default class Home extends Component {
 	}
 
 	async getUserInfo() {
-		const info = await Auth.currentUserInfo();
-		console.log(info);
+		const info = await Auth.currentAuthenticatedUser();
+		// console.log(info);
 		if(this.props.isAuthenticated)
 		{
 			// Fetch id
 			this.setState({id: info ? info.id : null});
+			// this.props.setUserId(info ? info.id : null);
 
 			// Fetch email
-			var strEmail = info.attributes['email'];
+			var strEmail = info.attributes ? info.attributes['email'] : info.email;
 			if(strEmail.trim() === "admin@example.com")
 			this.setState({email : true});
 			
 			// Fetch firstname
-	    	var strFirstName = info.attributes['given_name'];
+	    	var strFirstName = info.attributes ? info.attributes['given_name'] : info.name.split(" ")[0];
 	    	this.setState({firstname : strFirstName });
 			
 			// Fetch lastname
-	    	var strLastName = info.attributes['family_name'];
+			var strLastName = info.attributes ? info.attributes['family_name'] : info.name.split(" ")[1];
 			this.setState({lastname : strLastName });
 			
 	    }

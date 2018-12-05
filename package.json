@@ -32,7 +32,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "predeploy": "npm run build",
-    "deploy": "aws s3 sync build/ s3://pomafocus-dev --delete",
     "predeploy:dev": "REACT_APP_ENV=pomafocusdev npm run build",
     "deploy:dev": "aws s3 sync build/ s3://pomafocus-dev --delete",
     "postdeploy:dev": "aws cloudfront create-invalidation --distribution-id E18EJWHL5U00R8 --paths /* && aws cloudfront create-invalidation --distribution-id E24V0E17YDEBW2 --paths /*",

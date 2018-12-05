@@ -109,8 +109,8 @@ export default class PomaAddTaskModal extends Component {
             const userInfo = await this.getUserInfo(user);
             usersArray.push(userInfo);
         });
-        const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
-        if (ownerInfo) { usersArray.push(ownerInfo) }
+        // const ownerInfo = projectOwner ? await this.getUserInfo(projectOwner) : null;
+        // if (ownerInfo) { usersArray.push(ownerInfo) }
         this.setState({ projectId: value, projectName, usersArray });
     }
 

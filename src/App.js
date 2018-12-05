@@ -1,4 +1,5 @@
 import { LinkContainer } from "react-router-bootstrap";
+import { API } from "aws-amplify";
 import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
@@ -22,19 +23,49 @@ class App extends Component {
 
     this.loadFacebookSDK();
     this.loadGoogleSDK();
-
     try {
-      await Auth.currentSession();
-      const test = await Auth.currentUserInfo();
-      this.userHasAuthenticated(true);
-      this.setUserId(test.id);
-    }
-    catch(e) {
-      if (e !== 'No current user') {
+        await Auth.currentAuthenticatedUser();
+        this.userHasAuthenticated(true);
+        const info = await Auth.currentAuthenticatedUser();
+        // Fetch email
+        var email = info.attributes ? info.attributes['email'] : info.email;
+        
+        // Fetch firstname
+        var firstname = info.attributes ? info.attributes['given_name'] : info.name.split(" ")[0];
+        
+        // Fetch lastname
+        var lastname = info.attributes ? info.attributes['family_name'] : info.name.split(" ")[1];
+
+        const id = info ? info.id : null;
+        this.setUserId(id);
+        console.log('id', id);
+        if (id) {
+          const userInfo = await this.getUserInfo(id);
+          if (!userInfo) {
+            console.log('create user');
+            this.createUser(firstname, lastname, email)
+          }
+        }
+    } catch (e) {
+        if (e !== "not authenticated") {
         alert(e);
       }
     }
     this.setState({ isAuthenticating: false });
+  }
+
+  getUserInfo = (userId) => API.get("api", `/api/user/${userId}`).then(response => true).catch(error => false);
+
+  // Creates the user in users table
+  createUser(firstName, lastName, emailId) {
+    return API.post("api", "/api/user", {
+      body: {
+        firstName,
+        lastName,
+        emailId,
+        role: 'developer',
+      }
+    });
   }
 
   loadFacebookSDK() {
@@ -92,6 +123,7 @@ class App extends Component {
       isAuthenticated: this.state.isAuthenticated,
       isFedAuth: this.state.isFedAuth,
       userHasAuthenticated: this.userHasAuthenticated,
+      setUserId: this.setUserId,
       userHasFedAuthenticated: this.userHasFedAuthenticated,
       id: this.state.id
     };
