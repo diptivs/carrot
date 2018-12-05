@@ -246,6 +246,12 @@ a:hover {
   height: 100px;
   text-align: center;
 }
+.event-modal-done .modal-body {
+  background-color: #32CD32;
+  color: white;
+  height: 100px;
+  text-align: center;
+}
 
 .v-center {
   position: relative;
