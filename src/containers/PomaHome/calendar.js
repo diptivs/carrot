@@ -25,11 +25,24 @@ export default class Calendar extends Component {
     async componentDidMount() {
         const schedule = await this.getSchedule();
         console.log('schedule', schedule);
+
+        const now = moment().format('X');
         // Convert to dates
         if(schedule.Items.length) {
-            schedule.Items.forEach( task => {
-                task.start = new Date(task.start)
-                task.end = new Date(task.end)
+            schedule.Items.forEach(task => {
+                const later = moment(task.start.slice(0, -1)).format('X');
+                const millisTill = (later - now) * 1000;
+                task.start = new Date(task.start.slice(0, -1))
+                task.end = new Date(task.end.slice(0, -1))
+                if (millisTill > 0) {
+                    setTimeout(() => {
+                        if (window.confirm(`Its time for your next task (${task.title})! Press ok to start, cancel to snooze.`)) {
+                            this.setState({ showEventModal: true, event: task });
+                        } else {
+                            // snooze
+                        };
+                    }, millisTill);
+                }
                 return task
             });
         }

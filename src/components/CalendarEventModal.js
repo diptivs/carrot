@@ -24,6 +24,9 @@ export default class CalendarEventModal extends Component {
 
     setTaskInfo = async () => {
         const { taskId } = this.props.event;
+        if (!taskId) {
+            return;
+        }
         const taskInfo = await this.getTaskInfo(taskId);
         const { taskDescription, taskStatus, taskPomodoroEndTime } = taskInfo;
         this.setState({ taskDescription, taskStatus, status: taskPomodoroEndTime ? DONE : NEW });

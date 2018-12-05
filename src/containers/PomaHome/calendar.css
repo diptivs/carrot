@@ -33,3 +33,12 @@
 .rbc-today {
     background-color: #fff4e1;
 }
+.rbc-current-time-indicator {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: red;
+    pointer-events: none;
+}
