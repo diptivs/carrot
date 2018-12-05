@@ -124,6 +124,11 @@ export default class Calendar extends Component {
     
 	render() {
         const { showEventModal, event } = this.state;
+        const minTime = new Date();
+        minTime.setHours(8,0,0);
+        const maxTime = new Date();
+        maxTime.setHours(20,0,0);
+        console.log(minTime, maxTime);
 		return (
             <div>
                 <DragAndDropCalendar
@@ -139,6 +144,8 @@ export default class Calendar extends Component {
                     endAccessor="end"
                     className="animated fadeIn"
                     onSelectEvent={this.toggleEditModal}
+                    min={minTime}
+                    max={maxTime}
                 />
 				{
 					showEventModal ? <CalendarEventModal show={showEventModal} handleClose={this.handleEventModalHide} event={event}/> : null

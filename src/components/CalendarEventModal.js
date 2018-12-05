@@ -59,6 +59,15 @@ export default class CalendarEventModal extends Component {
         this.setState({ started: false });
     };
 
+    snoozeTask = (taskId) => {
+        this.props.handleClose(null, false)
+        return API.post("api", "/api/schedule", {
+            body: {
+                snooze: taskId,
+            },
+        });
+    }
+
 	render() {
         const { started, taskDescription, status } = this.state;
         const { taskId, title, start, end } = this.props.event;
@@ -81,11 +90,12 @@ export default class CalendarEventModal extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="btn-poma-cancel" disabled={started} onClick={() => this.props.handleClose(null, false)}>Close</Button>
-                    <Button className="btn-poma" disabled={!started} onClick={this.timerComplete}>Done</Button>
+                    <Button className="btn-poma-cancel" disabled={started || taskIsDone} onClick={() => this.snoozeTask(taskId)}>Snooze</Button>
+                    <Button className="btn-poma" disabled={!started} onClick={this.timerComplete}>Complete</Button>
+                    <Button className="btn-poma" onClick={this.startTimer} disabled={started || taskIsDone}>Start</Button>
                     <LinkContainer to={`/tasks/${taskId}`}>
-                        <Button className="btn-poma" disabled={started || !taskId}>View</Button>
+                        <Button disabled={started || !taskId}>View</Button>
                     </LinkContainer>
-                    <Button onClick={this.startTimer} disabled={started || taskIsDone}>Start</Button>
                 </Modal.Footer>
             </Modal>
 		);

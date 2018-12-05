@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import LexChat from "react-lex";
 import "./configure.css";
+import config from "../../config";
 
 export default class Configure extends Component {
 	render() {
 		return (
 			<div className="configure-container">
-				<LexChat botName="OrderFlowers"
-                	IdentityPoolId="us-east-1:7292b8c0-56f1-4441-b2a6-xxxxxxxxxxxx"
+				<LexChat botName="PomaFocus"
+                	IdentityPoolId={config.cognito.IDENTITY_POOL_ID}
                 	placeholder="Start by telling us when your day starts"
                 	backgroundColor="#FFFFFF"
 					height="430px"
