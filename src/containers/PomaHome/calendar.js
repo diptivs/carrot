@@ -7,7 +7,6 @@ import CalendarEventModal from '../../components/CalendarEventModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.css';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-import Moment from "moment";
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.

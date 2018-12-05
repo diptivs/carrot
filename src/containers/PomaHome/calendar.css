@@ -13,8 +13,11 @@
 
 .rbc-event {
     background-color: #FF6347;
+    max-width: 300px;
 }
-
+.rbc-timeslot-group {
+    height: 100px;
+}
 .rbc-event.rbc-selected {
     background-color: #ffbf47;
 }
@@ -23,4 +26,7 @@
 }
 .rbc-addons-dnd-drag-preview {
     opacity: 0.5;
+}
+.rbc-day-slot .rbc-event--lunch {
+    background-color: #6ebe4a;
 }
