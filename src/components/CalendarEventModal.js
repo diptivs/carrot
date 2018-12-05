@@ -9,14 +9,25 @@ export default class CalendarEventModal extends Component {
         super(props);
         this.state = {
             started: false,
+            taskDescription: null,
+            taskStatus: null
         }
     }
+
+    async componentDidMount() {
+        const { taskId } = this.props.event;
+        const taskInfo = await this.getTaskInfo(taskId);
+        const { taskDescription, taskStatus } = taskInfo;
+        this.setState({ taskDescription, taskStatus });
+    }
+
+	getTaskInfo = (taskId) => API.get("api", `/api/task/${taskId}`);
 
     startTimer = () => {
         const { id } = this.props.event;
         // API.put("api", `/api/task/${id}`, {
         //     body: {
-        //         taskPomodoroStartTime: moment().format('X');
+        //         taskPomodoroStartTime: moment().format('X')
         //     }
         // });
         this.setState({
@@ -28,21 +39,20 @@ export default class CalendarEventModal extends Component {
         const { id } = this.props.event;
         // API.put("api", `/api/task/${id}`, {
         //     body: {
-        //         taskPomodoroEndTime: moment().format('X');
+        //         taskPomodoroEndTime: moment().format('X')
         //     }
         // });
     };
 
 	render() {
-        const { started } = this.state;
+        const { started, taskDescription } = this.state;
         const { title, id, start, end} = this.props.event;
         return (
             <Modal show={this.props.show} onHide={() => this.props.handleClose(null, false)} keyboard={false} dialogClassName="event-modal">
                 <Modal.Body>
                     <div><strong className="w-100">{ title }</strong></div>
                     <div className="w-60 pull-left">
-                        <div>Description goes here</div>
-                        <div>Pomodoro count</div>
+                        <div>{taskDescription}</div>
                     </div>
                     <div className="timer-container w-40 pull-right v-center">
                         <TimerMachine

@@ -25,14 +25,24 @@ export default class Calendar extends Component {
 
     async componentDidMount() {
         const schedule = await this.getSchedule();
-        console.log(schedule);
+        console.log('schedule', schedule);
+        // Convert to dates
+        if(schedule.Items.length) {
+            schedule.Items.forEach( task => {
+                task.start = new Date(task.start)
+                task.end = new Date(task.end)
+                return task
+            });
+        }
+        this.setState({ events: schedule.Items });
     }
 
     getSchedule = () => {
         return API.get("api", "/api/schedule", {
             queryStringParameters: {
-                startDate: moment().subtract(1, 'weeks').format('YYYY-MM-DD'),
+                startDate: moment().format('YYYY-MM-DD'),
                 endDate: moment().add(1, 'weeks').format('YYYY-MM-DD'),
+                create: true
             },
         });
     };
