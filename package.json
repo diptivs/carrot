@@ -34,10 +34,10 @@
     "predeploy": "npm run build",
     "predeploy:dev": "REACT_APP_ENV=pomafocusdev npm run build",
     "deploy:dev": "aws s3 sync build/ s3://pomafocus-dev --delete",
-    "postdeploy:dev": "aws cloudfront create-invalidation --distribution-id E18EJWHL5U00R8 --paths /* && aws cloudfront create-invalidation --distribution-id E24V0E17YDEBW2 --paths /*",
+    "postdeploy:dev": "aws cloudfront create-invalidation --distribution-id E18EJWHL5U00R8 --paths '/*' && aws cloudfront create-invalidation --distribution-id E24V0E17YDEBW2 --paths '/*'",
     "predeploy:prod": "REACT_APP_ENV=pomafocusprod npm run build",
     "deploy:prod": "aws s3 sync build/ s3://pomafocus --delete",
-    "postdeploy:prod": "aws cloudfront create-invalidation --distribution-id EDXFTJ87VI1Z5 --paths /* && aws cloudfront create-invalidation --distribution-id E2Y7OQG6PNS5SL --paths /*",
+    "postdeploy:prod": "aws cloudfront create-invalidation --distribution-id EDXFTJ87VI1Z5 --paths '/*' && aws cloudfront create-invalidation --distribution-id E2Y7OQG6PNS5SL --paths '/*'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
