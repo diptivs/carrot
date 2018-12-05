@@ -27,7 +27,9 @@ class App extends Component {
         await Auth.currentAuthenticatedUser();
         this.userHasAuthenticated(true);
         const info = await Auth.currentAuthenticatedUser();
+        const info2 = await Auth.currentUserInfo();
         console.log(info);
+        console.log(info2);
         // Fetch email
         var email = info.attributes ? info.attributes['email'] : info.email;
         
