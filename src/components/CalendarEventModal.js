@@ -6,7 +6,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import moment from "moment";
 import { TASK_STATUS } from "../constants";
 
-const { DONE, NEW } = TASK_STATUS;
+const { DONE, NEW, IN_PROGRESS } = TASK_STATUS;
 export default class CalendarEventModal extends Component {
     constructor(props) {
         super(props);
@@ -37,7 +37,8 @@ export default class CalendarEventModal extends Component {
         const { taskId } = this.props.event;
         API.put("api", `/api/task/${taskId}`, {
             body: {
-                taskPomodoroStartTime: moment().format('X')
+                taskPomodoroStartTime: moment().format('X'),
+                taskStatus: IN_PROGRESS
             }
         });
         this.setState({
@@ -49,7 +50,8 @@ export default class CalendarEventModal extends Component {
         const { taskId } = this.props.event;
         API.put("api", `/api/task/${taskId}`, {
             body: {
-                taskPomodoroEndTime: moment().format('X')
+                taskPomodoroEndTime: moment().format('X'),
+                taskStatus: DONE
             }
         }).then(() => {
             this.setTaskInfo();

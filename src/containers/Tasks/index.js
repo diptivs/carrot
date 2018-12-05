@@ -148,8 +148,8 @@ export default class Tasks extends Component {
 	getSchedule = () => {
         return API.get("api", "/api/schedule", {
             queryStringParameters: {
-                startDate: moment().format('YYYY-MM-DD'),
-                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD'),
+                startDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
+                endDate: moment().add(1, 'weeks').format('YYYY-MM-DDTHH:mm:ss.SSS'),
                 create: true
             },
         });
