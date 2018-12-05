@@ -5,6 +5,7 @@ import classNames from "classnames";
 import "./task.css";
 import { TASK_STATUS, NONE_VALUE } from "../../constants";
 import PomaAddTaskModal from "../../components/PomaAddTaskModal";
+import moment from "moment";
 
 const { DONE } = TASK_STATUS;
 
@@ -107,10 +108,22 @@ export default class Task extends Component {
 					userId,
 				}
 			}).then(() => {
-				window.location.reload();
+				this.getSchedule().then(() => {
+					window.location.reload();
+				});
 			});	
 		}
 	}
+
+	getSchedule = () => {
+        return API.get("api", "/api/schedule", {
+            queryStringParameters: {
+                startDate: moment().format('YYYY-MM-DD'),
+                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD'),
+                create: true
+            },
+        });
+	};
 
 	renderDeleteAlert = () => {
 		return(<Alert bsStyle="danger" onDismiss={this.handleDismiss}>

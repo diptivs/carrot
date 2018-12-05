@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import PomaAddTaskModal from "../../components/PomaAddTaskModal";
 import PomaAddProjectModal from "../../components/PomaAddProjectModal";
 import { Button, PageHeader, DropdownButton, MenuItem } from "react-bootstrap";
+import moment from "moment";
 
 export default class PomaHome extends Component {
 
@@ -44,9 +45,23 @@ export default class PomaHome extends Component {
 					taskPriority,
 					userId,
 				}
+			}).then(() => {
+				this.getSchedule().then(() => {
+					window.location.reload();
+				});
 			});
 		}
 	}
+
+	getSchedule = () => {
+        return API.get("api", "/api/schedule", {
+            queryStringParameters: {
+                startDate: moment().format('YYYY-MM-DD'),
+                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD'),
+                create: true
+            },
+        });
+	};
 
 	handleProjectModalHide = (data, isSubmit) => {
 		this.setState({ showAddProjectModal: false });

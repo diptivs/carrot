@@ -40,8 +40,7 @@ export default class Calendar extends Component {
         return API.get("api", "/api/schedule", {
             queryStringParameters: {
                 startDate: moment().format('YYYY-MM-DD'),
-                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD'),
-                create: true
+                endDate: moment().add(1, 'weeks').format('YYYY-MM-DD')
             },
         });
     };
