@@ -94,12 +94,26 @@ class App extends Component {
 
     loadGoogleSDK() {
 
-    window.gapi.load('auth2', function() {
+    /*window.gapi.load('auth2', function() {
         window.gapi.auth2.init({
             client_id: config.social.GOOGLE,
             scope: 'profile email openid'
         });
+    });*/
+
+    window.gapi.load('client:auth2', function() {
+      window.gapi.auth2.init({
+        client_id: config.social.GOOGLE,
+        scope: 'profile email'
+      });
+      window.gapi.client.init({
+        apiKey: config.social.CALAPPKEY,
+        clientId: config.social.CALENDARID,
+        discoveryDocs: "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+        scope: "https://www.googleapis.com/auth/calendar.readonly"
+      });
     });
+
   }
 
   userHasAuthenticated = async (authenticated) => {
