@@ -10,7 +10,7 @@ import moment from "moment";
 export default class PomaHome extends Component {
 
 	constructor(props) {
-        super(props);
+		super(props);
 		this.state = {
 			isLoading: true,
 			email: false,

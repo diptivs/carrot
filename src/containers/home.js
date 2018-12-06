@@ -31,8 +31,9 @@ export default class Home extends Component {
 		if(this.props.isAuthenticated)
 		{
 			console.log(info);
+			const id = info ? info.id : null
 			// Fetch id
-			this.setState({id: info ? info.id : null});
+			this.setState({id});
 			// this.props.setUserId(info ? info.id : null);
 
 			// Fetch email
@@ -48,6 +49,11 @@ export default class Home extends Component {
 			var strLastName = info.attributes ? info.attributes['family_name'] : info.name.split(" ")[1];
 			this.setState({lastname : strLastName });
 			
+			if (!id) {
+				const test = await Auth.currentUserInfo();
+				console.log(test);
+				this.setState({id: test.id});
+			}
 	    }
 	}
 	render() {
