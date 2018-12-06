@@ -67,29 +67,11 @@ class App extends Component {
         if(!info) {
           return;
         }
-        // Fetch email
-        var email = info.attributes ? info.attributes['email'] : info.email;
-        
-        // Fetch firstname
-        var firstname = info.attributes ? info.attributes['given_name'] : (info.name ? info.name.split(" ")[0] : null);
-        
-        console.log('lastname split app js');
-        // Fetch lastname
-        var lastname = info.attributes ? info.attributes['family_name'] : (info.name ? info.name.split(" ")[1] : null);
-        console.log('lastname done split app js');
-
         const id = info ? info.id : null;
         this.setUserId(id);
-        console.log('id', id);
         if (!id) {
           const test = await Auth.currentUserInfo();
           this.setUserId(test.id);
-        } else {
-          const userInfo = await this.getUserInfo(id);
-          if (!userInfo) {
-            console.log('create user');
-            this.createUser(firstname, lastname, email)
-          }
         }
     } catch (e) {
         if (e !== "not authenticated") {
@@ -149,6 +131,21 @@ class App extends Component {
     });
   }
 
+  setupFedUserInfo = async (user) => {
+    const { name, email } = user;
+    const info = await Auth.currentAuthenticatedUser();
+    const { id } = info;
+    this.setUserId(id);
+    // Fetch firstname
+    var firstname = name.split(" ")[0];
+    var lastname = name.split(" ")[1];
+    console.log('setupFedUserInfo')
+    if (!id) {
+      console.log('create user');
+      this.createUser(firstname, lastname, email)
+    }
+  }
+
   setUserId = (id) => {
     this.setState({ id });
   }
@@ -170,6 +167,7 @@ class App extends Component {
       isFedAuth: this.state.isFedAuth,
       userHasAuthenticated: this.userHasAuthenticated,
       setUserId: this.setUserId,
+      setupFedUserInfo: this.setupFedUserInfo,
       userHasFedAuthenticated: this.userHasFedAuthenticated,
       id: this.state.id
     };

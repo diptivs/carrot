@@ -40,16 +40,19 @@ export default class Login extends Component {
 		}
 	}
 
-	handleFbLogin = () => {
+	handleFbLogin = (reponse, user) => {
   		this.props.userHasAuthenticated(true);
 		this.props.userHasFedAuthenticated(true);
+		this.props.setupFedUserInfo(user);
 		// window.location.reload();
 	};
 
-	handleGoogleLogin = () => {
+	handleGoogleLogin = (reponse, user) => {
+		console.log(user);
   		this.props.userHasAuthenticated(true);
 		this.props.userHasFedAuthenticated(true);
-		window.location.reload();		  
+		this.props.setupFedUserInfo(user);
+		// window.location.reload();		  
 	};
 
 	render() {

@@ -89,9 +89,9 @@ export default class GoogleButton extends Component {
               'google',
               { token, expires_at },
               user
-	    );
+      );
 	    this.setState({ isLoading: false });
-	    this.props.onLogin(response);
+	    this.props.onLogin(response, user);
     } catch (e) {
       console.log(e);
       this.setState({ isLoading: false });

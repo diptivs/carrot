@@ -70,7 +70,7 @@ export default class FacebookButton extends Component {
         user
       );
       this.setState({ isLoading: false });
-      this.props.onLogin(response);
+      this.props.onLogin(response, user);
     } catch (e) {
       this.setState({ isLoading: false });
       this.handleError(e);
