@@ -57,6 +57,10 @@ export default class FacebookButton extends Component {
 
     this.setState({ isLoading: true });
 
+    window.FB.api('/me', (userInfo) => {
+      console.log(userInfo);
+    });
+
     try {
       const response = await Auth.federatedSignIn(
         "facebook",
