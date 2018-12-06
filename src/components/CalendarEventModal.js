@@ -68,6 +68,15 @@ export default class CalendarEventModal extends Component {
         });
     }
 
+    skipTask = (taskId) => {
+        this.props.handleClose(null, false)
+        return API.post("api", "/api/schedule", {
+            body: {
+                skip: taskId,
+            },
+        });
+    }
+
 	render() {
         const { started, taskDescription, status } = this.state;
         const { taskId, title, start, end } = this.props.event;
@@ -83,13 +92,14 @@ export default class CalendarEventModal extends Component {
                         <TimerMachine
                             started={started}
                             countdown={true}
-                            onComplete={this.timerComplete}
+                            // onComplete={this.timerComplete}
                             timeStart={(end.getTime() - start.getTime())}
                         />
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="btn-poma-cancel" disabled={started} onClick={() => this.props.handleClose(null, false)}>Close</Button>
+                    <Button className="btn-poma-cancel" disabled={started || taskIsDone} onClick={() => this.skipTask(taskId)}>Skip</Button>
                     <Button className="btn-poma-cancel" disabled={started || taskIsDone} onClick={() => this.snoozeTask(taskId)}>Snooze</Button>
                     <Button className="btn-poma" disabled={!started} onClick={this.timerComplete}>Complete</Button>
                     <Button className="btn-poma" onClick={this.startTimer} disabled={started || taskIsDone}>Start</Button>

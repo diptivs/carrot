@@ -64,6 +64,7 @@ export default class Calendar extends Component {
 
     handleEventModalHide = () => {
         this.setState({ showEventModal: false });
+        window.location.reload();
     }
 
 

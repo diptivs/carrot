@@ -1,6 +1,7 @@
 const TASK_STATUS = {
     NEW: "New",
-    DONE: "Done"
+    DONE: "Done",
+    IN_PROGRESS: "In Progress"
 }
 const ADD_PROJECT_MODAL = {
     EDIT_TITLE: "Edit this Project",

@@ -88,9 +88,10 @@ handleConfirmationSubmit = async event => {
 	try {
 		await Auth.confirmSignUp(email, confirmationCode);
 		await Auth.signIn(email, password);
-		this.createUser(firstname, lastname, email)
+		await this.createUser(firstname, lastname, email)
 		this.props.userHasAuthenticated(true);
 		this.props.history.push("/");
+		window.location.reload();
 	} catch (e) {
 		alert(e.message);
 		this.setState({ isLoading: false });
