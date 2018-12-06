@@ -131,10 +131,6 @@ renderConfirmationForm() {
 renderForm() {
 	return (
 		<form onSubmit={this.handleSubmit}>
-			<FacebookButton
-  				onLogin={this.handleFbLogin}
-			/>
-			<hr />
 			<FormGroup controlId="firstname" bsSize="large">
 				<ControlLabel>First Name</ControlLabel>
 				<FormControl

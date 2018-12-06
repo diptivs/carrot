@@ -30,6 +30,56 @@ export default class GoogleButton extends Component {
     this.setState({ isLoading: false });
   }
 
+   /*listUpcomingEvents() {
+
+    var startTime =new Date();
+    var endTime = new Date()
+    endTime.setDate(endTime.getDate() + 7);
+
+    console.log("Enter listUpcomingEvents" + startTime.toISOString() + endTime.toISOString());
+    
+    window.gapi.client.load('calendar', 'v3', function() {
+
+      window.gapi.client.calendar.events.list({
+      'calendarId': 'primary',
+      'timeMin': startTime.toISOString(),
+      'timeMax': endTime.toISOString(),
+      'showDeleted': false,
+      'singleEvents': true,
+      'maxResults': 10,
+      'orderBy': 'startTime'
+    }).then(function(response) {
+      var events = response.result.items;
+      console.log('Upcoming events:');
+
+
+      if (events.length > 0) {
+        for (var i = 0; i < events.length; i++) {
+          var event = events[i];
+          console.log(event);
+          var startEvent = event.start.dateTime;
+          if (!startEvent) {
+            startEvent = event.start.date;
+          }
+
+          var endEvent = event.end.dateTime;
+          if (!endEvent) {
+            endEvent = event.end.date;
+          }
+
+          console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+
+        }
+      } else {
+        console.log('No upcoming events found.');
+      }
+    });
+
+    });
+    
+  }*/
+
+
   handleClick = () => {
     const ga = window.gapi.auth2.getAuthInstance();
     const { onError } = this.props;

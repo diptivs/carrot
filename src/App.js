@@ -28,27 +28,12 @@ class App extends Component {
         this.userHasAuthenticated(true);
         const info = await Auth.currentAuthenticatedUser();
         console.log(info);
-        // Fetch email
-        var email = info.attributes ? info.attributes['email'] : info.email;
-        
-        // Fetch firstname
-        var firstname = info.attributes ? info.attributes['given_name'] : info.name.split(" ")[0];
-        
-        // Fetch lastname
-        var lastname = info.attributes ? info.attributes['family_name'] : info.name.split(" ")[1];
-
         const id = info ? info.id : null;
         this.setUserId(id);
         console.log('id', id);
         if (!id) {
           const test = await Auth.currentUserInfo();
           this.setUserId(test.id);
-        } else {
-          const userInfo = await this.getUserInfo(id);
-          if (!userInfo) {
-            console.log('create user');
-            this.createUser(firstname, lastname, email)
-          }
         }
     } catch (e) {
         if (e !== "not authenticated") {
@@ -117,12 +102,26 @@ class App extends Component {
 
     loadGoogleSDK() {
 
-    window.gapi.load('auth2', function() {
+    /*window.gapi.load('auth2', function() {
         window.gapi.auth2.init({
             client_id: config.social.GOOGLE,
             scope: 'profile email openid'
         });
+    });*/
+
+    window.gapi.load('client:auth2', function() {
+      window.gapi.auth2.init({
+        client_id: config.social.GOOGLE,
+        scope: 'profile email'
+      });
+      window.gapi.client.init({
+        apiKey: config.social.CALAPPKEY,
+        clientId: config.social.CALENDARID,
+        discoveryDocs: "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+        scope: "https://www.googleapis.com/auth/calendar.readonly"
+      });
     });
+
   }
 
   userHasAuthenticated = async (authenticated) => {
@@ -140,9 +139,13 @@ class App extends Component {
     var firstname = name.split(" ")[0];
     var lastname = name.split(" ")[1];
     console.log('setupFedUserInfo')
-    if (!id) {
-      console.log('create user');
-      this.createUser(firstname, lastname, email)
+    debugger;
+    if (id) {
+      const userInfo = await this.getUserInfo(id);
+      if (!userInfo) {
+        console.log('create user');
+        this.createUser(firstname, lastname, email)
+      }
     }
   }
 
