@@ -363,7 +363,9 @@ a:hover {
 .br-0 {
   border-radius: 0px!important;
 }
-
+.p-4 {
+  padding: 1rem!important;
+}
 /* Sortable drag and drop */
 .SortableList {
   position: relative;

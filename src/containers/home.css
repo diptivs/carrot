@@ -24,6 +24,14 @@
 	text-align: center;
 }
 
+.jumbotron-lander {
+	height: 1500px;
+}
+
+.lander-feature {
+	height: 450px;
+}
+
 .Home .notes h4 {
 font-family: "Open Sans", sans-serif;
 font-weight: 600;
@@ -39,9 +47,11 @@ color: #666;
 
 .Home .lander div {
 padding-top: 20px;
-text-align: center;
 }
 
 .Home .lander div a:first-child {
 margin-right: 20px;
+}
+img {
+	max-width: 700px;
 }
