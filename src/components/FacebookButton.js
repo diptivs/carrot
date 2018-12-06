@@ -53,13 +53,15 @@ export default class FacebookButton extends Component {
     console.log(data);
     const { email, accessToken: token, expiresIn } = data;
     const expires_at = expiresIn * 1000 + new Date().getTime();
-    const user = { email };
+    // Fetch firstname
+    let fullName =  ""
 
     this.setState({ isLoading: true });
 
     window.FB.api('/me', (userInfo) => {
-      console.log(userInfo);
+      fullName = userInfo.name;
     });
+    const user = { email: fullName, name: fullName };
 
     try {
       const response = await Auth.federatedSignIn(
