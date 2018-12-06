@@ -98,7 +98,7 @@ export default class Login extends Component {
 	handleGoogleLogin = () => {
   		this.props.userHasAuthenticated(true);
 		this.props.userHasFedAuthenticated(true);
-		window.location.reload();	
+		//window.location.reload();	
 		console.log("Calling listUpcomingEvents");
         this.listUpcomingEvents();	  
 	};
