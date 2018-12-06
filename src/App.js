@@ -24,7 +24,6 @@ class App extends Component {
     this.loadFacebookSDK();
     this.loadGoogleSDK();
     try {
-        await Auth.currentSession();
         await Auth.currentAuthenticatedUser();
         this.userHasAuthenticated(true);
         const info = await Auth.currentAuthenticatedUser();
@@ -41,7 +40,10 @@ class App extends Component {
         const id = info ? info.id : null;
         this.setUserId(id);
         console.log('id', id);
-        if (id) {
+        if (!id) {
+          const test = await Auth.currentUserInfo();
+          this.setUserId(test.id);
+        } else {
           const userInfo = await this.getUserInfo(id);
           if (!userInfo) {
             console.log('create user');
@@ -49,7 +51,7 @@ class App extends Component {
           }
         }
     } catch (e) {
-        if (e !== "No current user") {
+        if (e !== "not authenticated") {
         alert(e);
       }
     }
@@ -133,7 +135,7 @@ class App extends Component {
 
     return (
       !this.state.isAuthenticating &&
-      <div className="App container">
+      <div className="App">
         <Navbar fluid collapseOnSelect fixedTop>
           <Navbar.Header>
               <Link to="/"><img src={process.env.PUBLIC_URL + '/pomafocusIcon.png'} alt="logo" />POMAFOCUS</Link>
