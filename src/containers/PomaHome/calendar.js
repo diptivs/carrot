@@ -83,7 +83,7 @@ export default class Calendar extends Component {
                             endEvent = event.end.date;
                         }
                         const oldList = this.state.events;
-                        const newList = oldList.push({
+                        const newList = oldList.concat({
                             type: null,
                             end: new Date(endEvent),
                             start: new Date(startEvent),
