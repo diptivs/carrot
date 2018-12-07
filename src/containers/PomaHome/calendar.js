@@ -75,30 +75,28 @@ export default class Calendar extends Component {
     
     
           if (events.length > 0) {
-            for (var i = 0; i < events.length; i++) {
-              var event = events[i];
-              console.log(event);
-              var startEvent = event.start.dateTime;
-              if (!startEvent) {
-                startEvent = event.start.date;
-              }
-    
-              var endEvent = event.end.dateTime;
-              if (!endEvent) {
-                endEvent = event.end.date;
-              }
-              const oldList = this.state.events;
-              const newList = oldList.push({
-                type: null,
-                end: new Date(endEvent).toISOString(),
-                start: new Date(startEvent).toISOString(),
-                title: event.summary,
-                type: null
-              });
-              this.setState({ events: newList });
-              console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
-    
-            }
+            events.forEach((event) => {
+                console.log(event);
+                var startEvent = event.start.dateTime;
+                if (!startEvent) {
+                  startEvent = event.start.date;
+                }
+      
+                var endEvent = event.end.dateTime;
+                if (!endEvent) {
+                  endEvent = event.end.date;
+                }
+                const oldList = this.state.events;
+                const newList = oldList.push({
+                  type: null,
+                  end: new Date(endEvent).toISOString(),
+                  start: new Date(startEvent).toISOString(),
+                  title: event.summary,
+                  type: null
+                });
+                this.setState({ events: newList });
+                console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+            });
           } else {
             console.log('No upcoming events found.');
           }
