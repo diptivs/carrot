@@ -85,8 +85,8 @@ export default class Calendar extends Component {
                         const oldList = this.state.events;
                         const newList = oldList.push({
                             type: null,
-                            end: new Date(endEvent).toISOString(),
-                            start: new Date(startEvent).toISOString(),
+                            end: new Date(endEvent),
+                            start: new Date(startEvent),
                             title: event.summary,
                             type: null
                         });
