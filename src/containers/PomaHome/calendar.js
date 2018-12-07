@@ -25,6 +25,11 @@ export default class Calendar extends Component {
     }
 
     async componentDidMount() {
+        this.fetchData()
+    }
+
+    fetchData = async () => {
+        this.setState({ events: [] });
         const schedule = await this.getSchedule();
         console.log('schedule', schedule);
 		console.log("Calling listUpcomingEvents");
@@ -120,7 +125,8 @@ export default class Calendar extends Component {
 
     handleEventModalHide = () => {
         this.setState({ showEventModal: false });
-        window.location.reload();
+        this.fetchData();
+        // window.location.reload();
     }
 
 
