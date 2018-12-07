@@ -25,14 +25,10 @@ export default class Calendar extends Component {
     async componentDidMount() {
         const schedule = await this.getSchedule();
         console.log('schedule', schedule);
-		console.log("Calling listUpcomingEvents");
-        const googleList = this.listUpcomingEvents();	  
         const now = moment().format('X');
         // Convert to dates
         if(schedule.Items.length) {
-            const oldSchedule = schedule.Items;
-            const newSchedule = oldSchedule.concat(googleList)
-            newSchedule.forEach(task => {
+            schedule.Items.forEach(task => {
                 const later = moment(task.start.slice(0, -1)).format('X');
                 const millisTill = (later - now) * 1000;
                 task.start = new Date(task.start.slice(0, -1))
@@ -50,9 +46,11 @@ export default class Calendar extends Component {
             });
         }
         this.setState({ events: schedule.Items });
+        console.log("Calling listUpcomingEvents");
+        this.listUpcomingEvents();	  
     }
 
-    listUpcomingEvents() {
+    listUpcomingEvents = () => {
         const list = [];
         var startTime =new Date();
         var endTime = new Date()
@@ -104,7 +102,9 @@ export default class Calendar extends Component {
         });
     
         });
-        return list;
+        const oldList = this.state.events;
+        const events = oldList.concat(list);
+        this.setState({ events });        
       }
     
     getSchedule = () => {
