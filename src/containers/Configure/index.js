@@ -64,7 +64,7 @@ export default class Configure extends Component {
 		return (
 			<div className="configure-container">
 				<ChatBot
-					title="My Bot"
+					title="Configuration helper"
 					theme={myTheme}
 					botName="PomaFocus"
 					welcomeMessage="Welcome! My name is Poma, I will be helping you configure your accout. I will ask you several questions and setup your account preferences based on your answers. Shall we begin?"
