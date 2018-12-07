@@ -72,35 +72,36 @@ export default class Calendar extends Component {
                 var events = response.result.items;
                 console.log('Upcoming events:');
             
-            
-                if (events.length > 0) {
-                    const list = [];
-                    events.forEach((event) => {
-                        console.log(event);
-                        var startEvent = event.start.dateTime;
-                        if (!startEvent) {
-                            startEvent = event.start.date;
-                        }
-                        var endEvent = event.end.dateTime;
-                        if (!endEvent) {
-                            endEvent = event.end.date;
-                        }
-                        list.push({
-                                type: null,
-                                end: new Date(endEvent).toISOString(),
-                                start: new Date(startEvent).toISOString(),
-                                title: event.summary,
-                                type: null
-                        })
-                        console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
-
-                    });
-                    const oldList = this.state.events;
-                    const events = oldList.concat(list);
-                    this.setState({ events });                    
-                } else {
-                    console.log('No upcoming events found.');
-                }
+                setTimeout(() => {
+                    if (events && events.length) {
+                        const list = [];
+                        events.forEach((event) => {
+                            console.log(event);
+                            var startEvent = event.start.dateTime;
+                            if (!startEvent) {
+                                startEvent = event.start.date;
+                            }
+                            var endEvent = event.end.dateTime;
+                            if (!endEvent) {
+                                endEvent = event.end.date;
+                            }
+                            list.push({
+                                    type: null,
+                                    end: new Date(endEvent).toISOString(),
+                                    start: new Date(startEvent).toISOString(),
+                                    title: event.summary,
+                                    type: null
+                            })
+                            console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+    
+                        });
+                        const oldList = this.state.events;
+                        const events = oldList.concat(list);
+                        this.setState({ events });                    
+                    } else {
+                        console.log('No upcoming events found.');
+                    }
+                }, 2000);
             });
         });
     }
