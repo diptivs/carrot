@@ -139,7 +139,6 @@ class App extends Component {
     var firstname = name.split(" ")[0];
     var lastname = name.split(" ")[1];
     console.log('setupFedUserInfo')
-    debugger;
     if (id) {
       const userInfo = await this.getUserInfo(id);
       if (!userInfo) {

@@ -25,11 +25,14 @@ export default class Calendar extends Component {
     async componentDidMount() {
         const schedule = await this.getSchedule();
         console.log('schedule', schedule);
-
+		console.log("Calling listUpcomingEvents");
+        const googleList = this.listUpcomingEvents();	  
         const now = moment().format('X');
         // Convert to dates
         if(schedule.Items.length) {
-            schedule.Items.forEach(task => {
+            const oldSchedule = schedule.Items;
+            const newSchedule = oldSchedule.concat(googleList)
+            newSchedule.forEach(task => {
                 const later = moment(task.start.slice(0, -1)).format('X');
                 const millisTill = (later - now) * 1000;
                 task.start = new Date(task.start.slice(0, -1))
@@ -49,6 +52,61 @@ export default class Calendar extends Component {
         this.setState({ events: schedule.Items });
     }
 
+    listUpcomingEvents() {
+        const list = [];
+        var startTime =new Date();
+        var endTime = new Date()
+        endTime.setDate(endTime.getDate() + 7);
+    
+        console.log("Enter listUpcomingEvents" + startTime.toISOString() + endTime.toISOString());
+        
+        window.gapi.client.load('calendar', 'v3', function() {
+    
+          window.gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'timeMin': startTime.toISOString(),
+          'timeMax': endTime.toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        }).then(function(response) {
+          var events = response.result.items;
+          console.log('Upcoming events:');
+    
+    
+          if (events.length > 0) {
+            for (var i = 0; i < events.length; i++) {
+              var event = events[i];
+              console.log(event);
+              var startEvent = event.start.dateTime;
+              if (!startEvent) {
+                startEvent = event.start.date;
+              }
+    
+              var endEvent = event.end.dateTime;
+              if (!endEvent) {
+                endEvent = event.end.date;
+              }
+              list.push({
+                    type: null,
+                    end: new Date(endEvent).toISOString(),
+                    start: new Date(startEvent).toISOString(),
+                    title: event.summary,
+                    type: null
+              })
+              console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+    
+            }
+          } else {
+            console.log('No upcoming events found.');
+          }
+        });
+    
+        });
+        return list;
+      }
+    
     getSchedule = () => {
         return API.get("api", "/api/schedule", {
             queryStringParameters: {
