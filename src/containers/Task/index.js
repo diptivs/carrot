@@ -159,12 +159,13 @@ export default class Task extends Component {
 		console.log('userId', userId);
 		const canEdit = (userId === this.props.id) || (this.props.id === projectOwner);
 		const editButton = canEdit ? <Button onClick={this.editTask} className="ml-3 btn-toolbar pull-right transition"><i className="mr-0 fas fa-pencil-alt"/></Button> : null;
+		const deleteButton = canEdit ? <Button onClick={() => this.deleteTask(false)} className="btn-toolbar pull-right transition"><i className="mr-0 fas fa-trash-alt"/></Button> : null;
 		return (
 			<div className="task-container">
 				<div className="task-menu-bar animated fadeIn">
 					<Button onClick={this.goBack} className="btn-add pull-right transition ml-3">Back</Button>
 					{ editButton }
-					<Button onClick={() => this.deleteTask(false)} className="btn-toolbar pull-right transition"><i className="mr-0 fas fa-trash-alt"/></Button>
+					{ deleteButton }
 				</div>
 				{ deleting ? this.renderDeleteAlert() : null }
 				<div className={classNames("task-card-big shadow animated fadeIn", taskStatus === DONE ? "done-big" : null)}>
