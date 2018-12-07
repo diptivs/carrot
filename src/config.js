@@ -13,9 +13,8 @@ const pomafocusdev = {
 	},
 	social: {
 		FB: "2259819917380032",
-		GOOGLE: "139912536088-gvpkam6e5tj0u58ms2qfledkc93g954p.apps.googleusercontent.com",
-		CALENDARID: "139912536088-03o0o4tnalod8k1ga70sn5cauov3rh86.apps.googleusercontent.com",
-		CALAPPKEY: "AIzaSyCo03cKxGX4PZJx1GKD9CMJ7XCo7nvLJ9s"
+		GOOGLE: "342197279641-91rss3lpgh46hmtkahm1v1rhum2cbn98.apps.googleusercontent.com",
+		CALAPPKEY: "AIzaSyDPB1jNCQr1RGOaaLzWW6dFc1RprWOVUPg"
 	}
 };
 
@@ -32,9 +31,8 @@ const pomafocusprod = {
 	},
 	social: {
 		FB: "2259819917380032",
-		GOOGLE: "139912536088-gvpkam6e5tj0u58ms2qfledkc93g954p.apps.googleusercontent.com",
-		CALENDARID: "139912536088-03o0o4tnalod8k1ga70sn5cauov3rh86.apps.googleusercontent.com",
-		CALAPPKEY: "AIzaSyCo03cKxGX4PZJx1GKD9CMJ7XCo7nvLJ9s"
+		GOOGLE: "342197279641-91rss3lpgh46hmtkahm1v1rhum2cbn98.apps.googleusercontent.com",
+		CALAPPKEY: "AIzaSyDPB1jNCQr1RGOaaLzWW6dFc1RprWOVUPg"
 	}
 };
 
