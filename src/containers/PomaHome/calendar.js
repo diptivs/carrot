@@ -109,8 +109,8 @@ export default class Calendar extends Component {
     getSchedule = () => {
         return API.get("api", "/api/schedule", {
             queryStringParameters: {
-                startDate: moment().format('YYYY-MM-DDTHH:mm:ss.SSS'),
-                endDate: moment().add(1, 'weeks').format('YYYY-MM-DDTHH:mm:ss.SSS')
+                startDate: moment().startOf('isoWeek').format('YYYY-MM-DDTHH:mm:ss.SSS'),
+                endDate: moment().add(1, 'weeks').endOf('isoWeek').format('YYYY-MM-DDTHH:mm:ss.SSS')
             },
         });
     };
