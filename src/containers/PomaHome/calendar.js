@@ -7,7 +7,6 @@ import CalendarEventModal from '../../components/CalendarEventModal'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './calendar.css';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-import { LUNCH_TYPE } from "../../constants";
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -26,6 +25,9 @@ export default class Calendar extends Component {
     async componentDidMount() {
         const schedule = await this.getSchedule();
         console.log('schedule', schedule);
+		console.log("Calling listUpcomingEvents");
+        this.listUpcomingEvents();	  
+        
         const now = moment().format('X');
         // Convert to dates
         if(schedule.Items.length) {
@@ -47,8 +49,6 @@ export default class Calendar extends Component {
             });
         }
         this.setState({ events: schedule.Items });
-        console.log("Calling listUpcomingEvents");
-        this.listUpcomingEvents();	  
     }
 
     listUpcomingEvents = () => {
@@ -60,51 +60,44 @@ export default class Calendar extends Component {
         
         window.gapi.client.load('calendar', 'v3', function() {
     
-            window.gapi.client.calendar.events.list({
-                'calendarId': 'primary',
-                'timeMin': startTime.toISOString(),
-                'timeMax': endTime.toISOString(),
-                'showDeleted': false,
-                'singleEvents': true,
-                'maxResults': 10,
-                'orderBy': 'startTime'
-            }).then(function(response) {
-                var events = response.result.items;
-                console.log('Upcoming events:');
-            
-                setTimeout(() => {
-                    if (events && events.length) {
-                        const list = [];
-                        events.forEach((event) => {
-                            console.log(event);
-                            var startEvent = event.start.dateTime;
-                            if (!startEvent) {
-                                startEvent = event.start.date;
-                            }
-                            var endEvent = event.end.dateTime;
-                            if (!endEvent) {
-                                endEvent = event.end.date;
-                            }
-                            list.push({
-                                    type: null,
-                                    end: new Date(endEvent).toISOString(),
-                                    start: new Date(startEvent).toISOString(),
-                                    title: event.summary,
-                                    type: null
-                            })
-                            console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+          window.gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'timeMin': startTime.toISOString(),
+          'timeMax': endTime.toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        }).then(function(response) {
+          var events = response.result.items;
+          console.log('Upcoming events:');
     
-                        });
-                        const oldList = this.state.events;
-                        const events = oldList.concat(list);
-                        this.setState({ events });                    
-                    } else {
-                        console.log('No upcoming events found.');
-                    }
-                }, 2000);
-            });
+    
+          if (events.length > 0) {
+            for (var i = 0; i < events.length; i++) {
+              var event = events[i];
+              console.log(event);
+              var startEvent = event.start.dateTime;
+              if (!startEvent) {
+                startEvent = event.start.date;
+              }
+    
+              var endEvent = event.end.dateTime;
+              if (!endEvent) {
+                endEvent = event.end.date;
+              }
+    
+              console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+    
+            }
+          } else {
+            console.log('No upcoming events found.');
+          }
         });
-    }
+    
+        });
+        
+      }
     
     getSchedule = () => {
         return API.get("api", "/api/schedule", {
@@ -116,10 +109,6 @@ export default class Calendar extends Component {
     };
 
     toggleEditModal = (event) => {
-        const { type } = event;
-        if(type === LUNCH_TYPE || type === null){
-            return;
-        }
         this.setState({ showEventModal: true, event });
     }
 
