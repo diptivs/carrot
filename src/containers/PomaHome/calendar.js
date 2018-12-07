@@ -59,52 +59,46 @@ export default class Calendar extends Component {
     
         console.log("Enter listUpcomingEvents" + startTime.toISOString() + endTime.toISOString());
         
-        window.gapi.client.load('calendar', 'v3', function() {
-    
-          window.gapi.client.calendar.events.list({
-          'calendarId': 'primary',
-          'timeMin': startTime.toISOString(),
-          'timeMax': endTime.toISOString(),
-          'showDeleted': false,
-          'singleEvents': true,
-          'maxResults': 10,
-          'orderBy': 'startTime'
-        }).then(function(response) {
-          var events = response.result.items;
-          console.log('Upcoming events:');
-    
-    
-          if (events.length > 0) {
-            events.forEach((event) => {
-                console.log(event);
-                var startEvent = event.start.dateTime;
-                if (!startEvent) {
-                  startEvent = event.start.date;
+        window.gapi.client.load('calendar', 'v3', () => {
+            window.gapi.client.calendar.events.list({
+                'calendarId': 'primary',
+                'timeMin': startTime.toISOString(),
+                'timeMax': endTime.toISOString(),
+                'showDeleted': false,
+                'singleEvents': true,
+                'maxResults': 10,
+                'orderBy': 'startTime'
+            }).then((response) => {
+                var events = response.result.items;
+                console.log('Upcoming events:');
+                if (events.length > 0) {
+                    events.forEach((event) => {
+                        console.log(event);
+                        var startEvent = event.start.dateTime;
+                        if (!startEvent) {
+                            startEvent = event.start.date;
+                        }
+                        var endEvent = event.end.dateTime;
+                        if (!endEvent) {
+                            endEvent = event.end.date;
+                        }
+                        const oldList = this.state.events;
+                        const newList = oldList.push({
+                            type: null,
+                            end: new Date(endEvent).toISOString(),
+                            start: new Date(startEvent).toISOString(),
+                            title: event.summary,
+                            type: null
+                        });
+                        this.setState({ events: newList });
+                        console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
+                    });
+                } else {
+                    console.log('No upcoming events found.');
                 }
-      
-                var endEvent = event.end.dateTime;
-                if (!endEvent) {
-                  endEvent = event.end.date;
-                }
-                const oldList = this.state.events;
-                const newList = oldList.push({
-                  type: null,
-                  end: new Date(endEvent).toISOString(),
-                  start: new Date(startEvent).toISOString(),
-                  title: event.summary,
-                  type: null
-                });
-                this.setState({ events: newList });
-                console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
             });
-          } else {
-            console.log('No upcoming events found.');
-          }
         });
-    
-        });
-        
-      }
+    }
     
     getSchedule = () => {
         return API.get("api", "/api/schedule", {
