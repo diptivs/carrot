@@ -70,7 +70,7 @@ export default class Calendar extends Component {
                 'orderBy': 'startTime'
             }).then((response) => {
                 var events = response.result.items;
-                console.log('Upcoming events:');
+                console.log('Upcoming events:' , events);
                 if (events.length > 0) {
                     events.forEach((event) => {
                         console.log(event);
