@@ -75,8 +75,7 @@ export default class Calendar extends Component {
             
                 if (events.length > 0) {
                     const list = [];
-                    for (var i = 0; i < events.length; i++) {
-                        var event = events[i];
+                    events.forEach((event) => {
                         console.log(event);
                         var startEvent = event.start.dateTime;
                         if (!startEvent) {
@@ -94,7 +93,8 @@ export default class Calendar extends Component {
                                 type: null
                         })
                         console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
-                    }
+
+                    });
                     const oldList = this.state.events;
                     const events = oldList.concat(list);
                     this.setState({ events });                    
