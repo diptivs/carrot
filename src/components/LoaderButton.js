@@ -8,6 +8,7 @@ export default ({
 	loadingText,
 	className = "",
 	disabled = false,
+	icon,
 	...props
 }) =>
 	<Button
@@ -16,5 +17,6 @@ export default ({
 		{...props}
 	>
 		{isLoading && <Glyphicon glyph="refresh" className="spinning" />}
+		{icon ? <i class={icon}/> : null}
 		{!isLoading ? text : loadingText}
 	</Button>;

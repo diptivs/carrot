@@ -416,3 +416,19 @@ a:hover {
   background-color: rgba(255, 255, 255, 0.8);
   cursor: row-resize;
 }
+.FacebookButton{
+  background-color: #4267B2;
+  border: none;
+}
+.FacebookButton:hover{
+  background-color: #34528e;
+  border: none;
+}
+.GoogleButton{
+  background-color: #ED373A;
+  border: none;
+}
+.GoogleButton:hover{
+  background-color: #bc2c2e;
+  border: none;
+}

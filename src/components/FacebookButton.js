@@ -84,7 +84,8 @@ export default class FacebookButton extends Component {
         bsSize="large"
         bsStyle="primary"
         className="FacebookButton"
-        text="Login with Facebook"
+        icon="fab fa-facebook-square"
+        text="Continue with Facebook"
         onClick={this.handleClick}
         disabled={this.state.isLoading}
       />

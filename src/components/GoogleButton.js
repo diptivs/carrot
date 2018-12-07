@@ -157,7 +157,7 @@ export default class GoogleButton extends Component {
         bsSize="large"
         bsStyle="primary"
         className="GoogleButton"
-        text="Login with Google"
+        text="Continue with Google"
         onClick={this.handleClick}
         disabled={this.state.isLoading}
       />
