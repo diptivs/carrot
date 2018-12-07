@@ -18,7 +18,8 @@ export default class Calendar extends Component {
         super(props);
         this.state = {
             showEventModal: false,
-            events,
+            events: [],
+            googleEvents: [],
         }
     }
 
@@ -86,7 +87,15 @@ export default class Calendar extends Component {
               if (!endEvent) {
                 endEvent = event.end.date;
               }
-    
+              const oldList = this.state.events;
+              const newList = oldList.push({
+                type: null,
+                end: new Date(endEvent).toISOString(),
+                start: new Date(startEvent).toISOString(),
+                title: event.summary,
+                type: null
+              });
+              this.setState({ events: newList });
               console.log(event.summary + ' (' + startEvent + ')' + ' (' + endEvent + ')');
     
             }
