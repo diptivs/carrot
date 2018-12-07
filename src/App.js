@@ -108,7 +108,7 @@ class App extends Component {
       });
       window.gapi.client.init({
         apiKey: config.social.CALAPPKEY,
-        clientId: config.social.CALENDARID,
+        clientId: config.social.GOOGLE,
         discoveryDocs: "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
         scope: "https://www.googleapis.com/auth/calendar.readonly"
       });
