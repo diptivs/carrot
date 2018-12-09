@@ -35,7 +35,8 @@ export default class Configure extends Component {
             console.log("done with bot");
         });
 
-		return 'Configuration is complete! Start adding some tasks';
+		return 'Configuration is complete! If you would like to update your preferences, '+
+               'please stop by and I will help. Now try to add your tasks. Bye!';
 	}
 
     setPreferences = (preference) => {
@@ -69,7 +70,7 @@ export default class Configure extends Component {
 					botName="PomaFocus"
 					welcomeMessage="Welcome! My name is Poma, I will be helping you configure your accout. I will ask you several questions and setup your account preferences based on your answers. Shall we begin?"
 					onComplete={this.handleComplete.bind(this)}
-					clearOnComplete={true}
+					clearOnComplete={false}
 				/>
 			</div>
 		);
