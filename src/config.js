@@ -3,13 +3,13 @@
 const pomafocusdev = {
 	apiGateway: {
 		REGION: "us-west-2",
-		URL: "https://99tc53sae1.execute-api.us-west-2.amazonaws.com/dev"
+		URL: "https://phlrveklx2.execute-api.us-west-2.amazonaws.com/dev"
 	},
 	cognito: {
 		REGION: "us-west-2",
-		USER_POOL_ID: "us-west-2_rfGWuBXbF",
-		APP_CLIENT_ID: "6d3pufv80ujmp5v8oecobbijo4",
-		IDENTITY_POOL_ID: "us-west-2:09d04c0b-65ad-45f0-a955-c7aaa9b9cd3b"
+		USER_POOL_ID: "us-west-2_5zUsaaG5Z",
+		APP_CLIENT_ID: "3qf6isld48pmpl5toi0dorimgn",
+		IDENTITY_POOL_ID: "us-west-2:1c74c78c-7ade-413e-926b-1c8d7696cc18"
 	},
 	social: {
 		FB: "2259819917380032",
@@ -21,13 +21,13 @@ const pomafocusdev = {
 const pomafocusprod = {
 		apiGateway: {
 		REGION: "us-west-2",
-		URL: "https://vwmn6z782g.execute-api.us-west-2.amazonaws.com/prod"
+		URL: "https://rds5qo34u2.execute-api.us-west-2.amazonaws.com/prod"
 	},
 	cognito: {
 		REGION: "us-west-2",
-		USER_POOL_ID: "us-west-2_M31RGYuFS",
-		APP_CLIENT_ID: "6dtbrf4j83ah4rsq8p5pj60a77",
-		IDENTITY_POOL_ID: "us-west-2:af1ccf24-a3eb-4b6a-a70d-89556bb54f07"
+		USER_POOL_ID: "us-west-2_FE8E9ZMJY",
+		APP_CLIENT_ID: "95nednjr1oe02vr25ukva5o5c",
+		IDENTITY_POOL_ID: "us-west-2:8eb6422e-c8c9-4164-9572-e76fd8604335"
 	},
 	social: {
 		FB: "2259819917380032",
